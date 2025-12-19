@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>India Post | Command Center</title>
+    <title>Dak Sewa | India Post Command Center</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
@@ -15,279 +15,298 @@
 
     <style>
         :root {
-            /* India Post Palette */
-            --primary-dark: #8B0000;  /* Sidebar Red */
-            --primary-light: #D32F2F; /* Accent Red */
-            --accent-gold: #FFC107;
-            --bg-body: #F4F7FE;
-            --bg-card: #FFFFFF;
-            --text-main: #2B3674;
-            --text-light: #A3AED0;
-            --shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+            /* Palette */
+            --primary: #800000;       /* Deep Maroon */
+            --primary-light: #A52A2A; 
+            --accent-gold: #FFD700;
+            --bg-body: #F5F7FA;
+            --text-main: #2C3E50;
+            --text-light: #636E72;
+            --success: #00B894;
+            --danger: #D63031;
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
         * { box-sizing: border-box; outline: none; }
-        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--bg-body); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        /* --- SIDEBAR --- */
-        .sidebar { width: 260px; background: linear-gradient(180deg, var(--primary-dark) 0%, #5a0000 100%); color: white; display: flex; flex-direction: column; padding: 20px; z-index: 100; }
-        .brand-box { display: flex; align-items: center; gap: 12px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px; }
-        .brand-logo { width: 40px; background: white; padding: 2px; border-radius: 4px; }
-        .brand-text h1 { font-family: 'Outfit', sans-serif; font-size: 18px; margin: 0; }
+        /* GOVT HEADER */
+        .gov-header { height: 36px; background: #222; color: white; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font-size: 11px; font-family: 'Roboto', sans-serif; letter-spacing: 0.5px; z-index: 102; }
+        .gov-links span { margin-left: 15px; cursor: pointer; opacity: 0.8; }
+        .gov-links span:hover { opacity: 1; text-decoration: underline; }
+
+        .app-container { display: flex; flex: 1; overflow: hidden; }
+
+        /* SIDEBAR (Maroon) */
+        .sidebar { width: 280px; background: var(--primary); color: white; display: flex; flex-direction: column; padding: 25px; box-shadow: 4px 0 15px rgba(0,0,0,0.1); z-index: 100; }
+        .brand-box { display: flex; align-items: center; gap: 15px; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 20px; }
+        .brand-logo { width: 45px; background: white; padding: 4px; border-radius: 8px; }
+        .brand-text h1 { font-size: 20px; font-weight: 700; margin: 0; letter-spacing: 0.5px; }
+        .brand-text span { font-size: 12px; opacity: 0.8; font-weight: 300; }
+
+        .nav-item { display: flex; align-items: center; padding: 14px 18px; color: rgba(255,255,255,0.8); border-radius: 12px; cursor: pointer; transition: 0.3s; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
+        .nav-item:hover, .nav-item.active { background: white; color: var(--primary); font-weight: 600; transform: translateX(5px); }
+        .nav-item i { width: 24px; font-size: 18px; margin-right: 10px; }
+
+        .live-feed-widget { margin-top: auto; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; height: 250px; }
+        .widget-title { font-size: 11px; font-weight: 700; opacity: 0.7; letter-spacing: 1px; margin-bottom: 10px; color: #FFD700; }
+        .sidebar-list { overflow-y: auto; flex: 1; padding-right: 5px; }
+        .sidebar-list::-webkit-scrollbar { width: 4px; }
+        .sidebar-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 2px; }
         
-        .nav-item { display: flex; align-items: center; padding: 12px 16px; color: rgba(255,255,255,0.7); border-radius: 10px; cursor: pointer; transition: 0.2s; margin-bottom: 8px; font-weight: 500; }
-        .nav-item:hover, .nav-item.active { background: var(--accent-gold); color: var(--primary-dark); font-weight: 700; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3); }
-        .nav-item i { width: 24px; margin-right: 10px; }
+        .yt-row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 12px; cursor: pointer; transition: 0.2s; }
+        .yt-row:hover { padding-left: 5px; color: var(--accent-gold); }
+        .priority-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: auto; box-shadow: 0 0 5px currentColor; flex-shrink: 0; }
 
-        .live-feed-widget { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 16px; margin-top: auto; flex: 1; overflow-y: auto; }
-        .sidebar-list-title { font-size:11px; font-weight:700; opacity:0.6; margin-bottom:10px; }
-        .yt-row { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 12px; cursor: pointer; }
-        .yt-row:hover { background: rgba(255,255,255,0.1); }
-        .priority-dot { width: 8px; height: 8px; border-radius: 50%; margin-left: auto; }
+        /* MAIN CONTENT */
+        .main-content { flex: 1; display: flex; flex-direction: column; background: var(--bg-body); overflow: hidden; }
+        .top-bar { height: 70px; background: white; border-bottom: 1px solid #E0E0E0; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
+        .page-header h2 { font-size: 22px; font-weight: 700; margin: 0; color: var(--primary); }
+        .page-header span { font-size: 13px; color: var(--text-light); }
+        .user-panel { display: flex; align-items: center; gap: 15px; background: #F5F7FA; padding: 5px 15px; border-radius: 30px; }
+        
+        .workspace { flex: 1; padding: 30px; overflow-y: auto; }
 
-        /* --- MAIN CONTENT --- */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .top-bar { height: 70px; background: var(--bg-card); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; }
-        .page-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 700; }
-        .top-right-logo { height: 40px; margin-left: 20px; border-left: 1px solid #eee; padding-left: 20px; }
-
-        .workspace { flex: 1; padding: 30px; overflow-y: auto; position: relative; }
-
-        /* --- COMMON CARD STYLES --- */
-        .card { background: var(--bg-card); border-radius: 20px; box-shadow: var(--shadow); padding: 20px; border: 1px solid white; height: 100%; display: flex; flex-direction: column; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .card-title { font-size: 16px; font-weight: 700; color: var(--text-main); }
-
-        /* --- DASHBOARD VIEW (OPERATOR) --- */
+        /* DASHBOARD GRID */
         .dashboard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1600px; margin: 0 auto; }
-        .kpi-card { height: 140px; justify-content: space-between; transition: 0.2s; }
+        .card { background: white; border-radius: 16px; padding: 20px; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; }
+        .card-header { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 600; font-size: 15px; color: var(--text-main); border-bottom: 2px solid var(--bg-body); padding-bottom: 8px; }
+
+        .kpi-card { height: 140px; justify-content: center; position: relative; overflow: hidden; transition: 0.2s; }
         .kpi-card:hover { transform: translateY(-3px); }
-        .kpi-val { font-size: 32px; font-weight: 700; color: var(--primary-dark); }
+        .kpi-title { font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; }
+        .kpi-value { font-size: 32px; font-weight: 700; color: var(--primary); margin: 5px 0; }
+        .kpi-sub { font-size: 12px; display: flex; align-items: center; gap: 5px; }
         
-        .ai-input-section { grid-column: span 1; grid-row: span 2; }
+        .card-pending { border-left: 5px solid var(--accent-gold); background: linear-gradient(135deg, #fff, #FFFDF5); cursor: pointer; }
+        .card-pending:hover { background: #FFF9E0; }
+        .pulse-dot { display: inline-block; width: 8px; height: 8px; background: red; border-radius: 50%; animation: pulse 1.5s infinite; margin-right: 5px; }
+
+        /* AI SECTION */
+        .ai-section { grid-column: span 1; grid-row: span 2; display: flex; flex-direction: column; }
+        .helper-text { font-size: 13px; color: var(--text-light); margin-bottom: 10px; font-style: italic; }
+        .ai-wrapper { flex: 1; background: #FAFAFA; border-radius: 12px; padding: 15px; display: flex; flex-direction: column; border: 1px dashed #CCC; }
+        .ai-textarea { flex: 1; width: 100%; border: none; background: transparent; resize: none; font-family: inherit; font-size: 14px; }
+        .mic-btn { width: 45px; height: 45px; border-radius: 12px; background: white; color: var(--text-light); border: 1px solid #EEE; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 18px; }
+        .mic-btn.active { background: #FFE5E5; color: var(--danger); animation: pulse 1.5s infinite; border-color: var(--danger); }
+
         .analytics-section { grid-column: span 3; grid-row: span 2; height: 450px; }
         .feed-section { grid-column: span 4; }
-
-        /* AI Elements */
-        .ai-wrapper { background: var(--bg-body); border-radius: 12px; padding: 10px; flex: 1; display: flex; flex-direction: column; }
-        .ai-textarea { width: 100%; border: none; background: transparent; resize: none; flex: 1; font-family: inherit; font-size: 14px; }
-        .mic-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ddd; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
-        .mic-active { background: #ffebee !important; color: #d32f2f; border-color: #d32f2f; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(0,0,0,0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0); } }
-        .btn-process { background: var(--primary-light); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; }
-
-        /* --- ANALYTICS VIEW (MANAGER) --- */
-        .analytics-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; grid-template-rows: auto auto auto; gap: 20px; }
         
-        /* Specific Analytics Layout */
-        .grid-kpi-row { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .grid-col-1 { grid-column: 1 / 2; grid-row: 2 / 4; } /* Tall Bar Chart */
-        .grid-col-2-top { grid-column: 2 / 3; grid-row: 2 / 3; } /* Priority List */
-        .grid-col-2-btm { grid-column: 2 / 3; grid-row: 3 / 4; } /* Donut */
-        .grid-col-3-top { grid-column: 3 / 4; grid-row: 2 / 3; } /* Map */
-        .grid-col-3-btm { grid-column: 3 / 4; grid-row: 3 / 4; } /* Line Chart */
+        .gov-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+        .gov-table th { background: #F9F9F9; text-align: left; padding: 12px 15px; font-weight: 600; color: var(--text-light); border-bottom: 2px solid #EEE; }
+        .gov-table td { padding: 12px 15px; border-bottom: 1px solid #EEE; color: var(--text-main); }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-weight: 600; font-size: 11px; }
+        .st-high { background: #FFE5E5; color: var(--danger); }
+        .st-med { background: #FFF8E1; color: #F39C12; }
+        .st-low { background: #E8F5E9; color: var(--success); }
 
-        .priority-item { background: #F4F7FE; border-left: 4px solid #E31A1C; padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .badge-crit { background: #E31A1C; color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+        /* MODAL COMMON */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; backdrop-filter: blur(4px); }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal-box { background: white; width: 90%; max-width: 900px; border-radius: 16px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transform: scale(0.9); transition: 0.4s; }
+        .modal-overlay.open .modal-box { transform: scale(1); }
+        .modal-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-block { background: #F5F7FA; padding: 15px; text-align: center; border-radius: 10px; }
 
-        /* TABLE */
-        .data-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .data-table th { text-align: left; padding: 12px; color: var(--text-light); font-size: 12px; border-bottom: 2px solid var(--bg-body); }
-        .data-table td { padding: 12px; border-bottom: 1px solid var(--bg-body); font-size: 13px; }
-        .pill { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        
-        /* View Switching */
-        .app-view { display: none; animation: fadeIn 0.3s; }
-        .app-view.active { display: block; }
+        /* TICKET POPUP SPECIFIC */
+        .ticket-popup-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        .tp-label { font-size: 11px; color: var(--text-light); text-transform: uppercase; font-weight: 600; margin-bottom: 4px; }
+        .tp-value { font-size: 14px; color: var(--text-main); font-weight: 500; margin-bottom: 15px; background: #F9F9F9; padding: 8px; border-radius: 6px; }
+        .tp-status { font-weight: 700; color: white; padding: 4px 10px; border-radius: 20px; font-size: 12px; display: inline-block; }
+
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(214, 48, 49, 0.4); } 100% { box-shadow: 0 0 0 15px rgba(0,0,0,0); } }
+        .app-view { display: none; } .app-view.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- MODAL STYLES (NEW) --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-            z-index: 9999; display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-        }
-        .modal-overlay.open { opacity: 1; pointer-events: all; }
-        
-        .modal-content {
-            background: #fff; width: 90%; max-width: 1000px; max-height: 90vh;
-            border-radius: 24px; padding: 30px; overflow-y: auto;
-            transform: scale(0.8); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-        }
-        .modal-overlay.open .modal-content { transform: scale(1); }
-
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .modal-close { font-size: 24px; cursor: pointer; color: #999; transition: 0.2s; }
-        .modal-close:hover { color: #333; }
-
-        .modal-summary-row {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 30px;
-        }
-        .summary-block {
-            background: #F4F7FE; padding: 20px; border-radius: 16px; text-align: center;
-            transition: 0.2s; cursor: pointer;
-        }
-        .summary-block:hover { background: #E6EEFF; transform: translateY(-3px); }
-        .sb-count { font-size: 24px; font-weight: 700; color: #2B3674; margin-top: 5px; }
-        .sb-label { font-size: 12px; color: #A3AED0; font-weight: 600; text-transform: uppercase; }
-
-        @media (max-width: 1400px) { 
-            .dashboard-grid, .analytics-grid { grid-template-columns: 1fr; }
-            .grid-kpi-row { grid-template-columns: 1fr 1fr; }
-            .analytics-section, .ai-input-section, .grid-col-1, .grid-col-2-top, .grid-col-2-btm, .grid-col-3-top, .grid-col-3-btm { grid-column: span 1; grid-row: auto; }
-        }
+        /* Analytics Grid */
+        .analytics-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 20px; }
+        .grid-kpi-row { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .a-col-1 { grid-column: 1 / 2; grid-row: 2 / 4; }
+        .a-col-2-top { grid-column: 2 / 3; grid-row: 2 / 3; }
+        .a-col-2-btm { grid-column: 2 / 3; grid-row: 3 / 4; }
+        .a-col-3-top { grid-column: 3 / 4; grid-row: 2 / 3; }
+        .a-col-3-btm { grid-column: 3 / 4; grid-row: 3 / 4; }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="brand-box">
-            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/India_Post.svg/1280px-India_Post.svg.png" 
-                 alt="India Post" class="brand-logo" onerror="this.style.display='none'">
-            <div class="brand-text" style="margin-left:10px;">
-                <h1>India Post</h1>
-                <span style="font-size:11px; opacity:0.7;">AI Command Center</span>
-            </div>
+    <div class="gov-header">
+        <div>GOVERNMENT OF INDIA | MINISTRY OF COMMUNICATIONS</div>
+        <div class="gov-links">
+            <span>Skip to Content</span> <span>Screen Reader</span> <span>A+</span> <span>A-</span> <span>Hindi / English</span>
         </div>
+    </div>
 
-        <div class="nav-item active" onclick="switchView('dashboard')"><i class="fas fa-th-large"></i> Dashboard</div>
-        <div class="nav-item" onclick="switchView('analytics')"><i class="fas fa-chart-pie"></i> Analytics</div>
+    <div class="app-container">
         
-        <div class="nav-item" onclick="openPendingModal()"><i class="fas fa-exclamation-circle" style="color:var(--accent-gold)"></i> Pending Actions</div>
-        
-        <div class="nav-item" onclick="switchView('complaints')"><i class="fas fa-inbox"></i> Live Inbox</div>
-        <div class="nav-item" onclick="switchView('config')"><i class="fas fa-sliders-h"></i> Config</div>
-
-        <div class="live-feed-widget">
-            <div class="sidebar-list-title">ACTIVE TICKETS</div>
-            <div id="sidebar-list"></div>
-        </div>
-    </aside>
-
-    <main class="main-content">
-        <div class="top-bar">
-            <div class="page-title" id="page-heading">Dashboard Overview</div>
-            <div style="display:flex; align-items:center;">
-                <div class="admin-pill" style="background:#fff; padding:6px 12px; border-radius:30px; font-size:13px; font-weight:600; border:1px solid #eee;">Admin</div>
-                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/India_Post.svg/1280px-India_Post.svg.png" 
-                     alt="India Post" class="top-right-logo">
+        <aside class="sidebar">
+            <div class="brand-box">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/India_Post.svg/1280px-India_Post.svg.png" class="brand-logo" onerror="this.style.display='none'">
+                <div class="brand-text"><h1>India Post</h1><span>Command Center</span></div>
             </div>
-        </div>
 
-        <div class="workspace">
-            
-            <div id="view-dashboard" class="app-view active">
-                <div class="dashboard-grid">
-                    <div class="card kpi-card"><div style="color:#A3AED0; font-size:12px;">TOTAL COMPLAINTS</div><div class="kpi-val" id="kpi-total">...</div></div>
-                    <div class="card kpi-card"><div style="color:#A3AED0; font-size:12px;">AI RESOLVED</div><div class="kpi-val" id="kpi-resolved">...</div></div>
-                    
-                    <div class="card kpi-card" onclick="openPendingModal()" style="cursor: pointer; border: 2px solid #FFC107; background:#FFF9E6;">
-                        <div style="color:#B38F00; font-size:12px; font-weight:700;">PENDING ACTION (Click)</div>
-                        <div class="kpi-val" id="kpi-pending" style="color:#B38F00">...</div>
+            <div class="nav-item active" onclick="switchView('dashboard')"><i class="fas fa-th-large"></i> Dashboard</div>
+            <div class="nav-item" onclick="switchView('analytics')"><i class="fas fa-chart-line"></i> Analytics</div>
+            <div class="nav-item" onclick="openPendingModal()"><i class="fas fa-exclamation-circle" style="color:var(--accent-gold)"></i> Pending Actions</div>
+            <div class="nav-item" onclick="switchView('complaints')"><i class="fas fa-inbox"></i> Grievance List</div>
+            <div class="nav-item" onclick="switchView('config')"><i class="fas fa-cogs"></i> System Config</div>
+
+            <div class="live-feed-widget">
+                <div class="widget-title"><i class="fas fa-satellite-dish"></i> CITIZEN LIVE FEED</div>
+                <div class="sidebar-list" id="sidebar-list">
                     </div>
-                    
-                    <div class="card kpi-card"><div style="color:#A3AED0; font-size:12px;">AVG TIME</div><div class="kpi-val">2.4h</div></div>
+            </div>
+        </aside>
 
-                    <div class="card ai-input-section">
-                        <div class="card-header"><div class="card-title"><i class="fas fa-robot" style="color:#FFC107"></i> AI Analyzer</div></div>
-                        <div class="ai-wrapper">
-                            <textarea id="manual-text" class="ai-textarea" placeholder="Type or click mic..."></textarea>
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+        <main class="main-content">
+            <div class="top-bar">
+                <div class="page-header">
+                    <h2 id="page-heading">Dashboard Overview</h2>
+                    <span><i class="fas fa-calendar-alt"></i> Real-time Monitoring System</span>
+                </div>
+                <div class="user-panel">
+                    <div style="width:32px; height:32px; background:#800000; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:12px;">AD</div>
+                    <div class="user-info"><span class="user-name">Rajesh Kumar</span><span class="user-role">Nodal Officer</span></div>
+                </div>
+            </div>
+
+            <div class="workspace">
+                
+                <div id="view-dashboard" class="app-view active">
+                    <div class="dashboard-grid">
+                        
+                        <div class="card kpi-card">
+                            <div class="kpi-title">Total Grievances</div>
+                            <div class="kpi-value" id="kpi-total">1,240</div>
+                            <div class="kpi-sub" style="color:var(--success)"><i class="fas fa-arrow-up"></i> Live Sync Active</div>
+                        </div>
+
+                        <div class="card kpi-card">
+                            <div class="kpi-title">AI Auto-Resolved</div>
+                            <div class="kpi-value" id="kpi-resolved">892</div>
+                            <div class="kpi-sub" style="color:#0984E3">72% Efficiency Rate</div>
+                        </div>
+
+                        <div class="card kpi-card card-pending" onclick="openPendingModal()">
+                            <div class="kpi-title" style="color:#B38F00; font-weight:700;"><span class="pulse-dot"></span> Action Required</div>
+                            <div class="kpi-value" id="kpi-pending" style="color:#D35400">45</div>
+                            <div class="kpi-sub" style="text-decoration:underline;">Click to view Breakdown</div>
+                        </div>
+
+                        <div class="card kpi-card">
+                            <div class="kpi-title">Avg Resolution Time</div>
+                            <div class="kpi-value">2.4 <span style="font-size:16px;">Hrs</span></div>
+                            <div class="kpi-sub" style="color:var(--success)">Within SLA Limits</div>
+                        </div>
+
+                        <div class="card ai-section">
+                            <div class="card-header"><div style="display:flex; align-items:center; gap:8px;"><i class="fas fa-microphone-alt"></i> Manual Assistant</div></div>
+                            <div class="helper-text">"Good Morning, Officer. Use the microphone or type below to log a walk-in complaint."</div>
+                            <div class="ai-wrapper">
+                                <textarea id="manual-text" class="ai-textarea" placeholder="Start typing details or click the mic..."></textarea>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; margin-top:15px; align-items:center;">
                                 <button class="mic-btn" id="mic-trigger"><i class="fas fa-microphone"></i></button>
-                                <button class="btn-process" id="process-ai" onclick="analyzeAndAdd()">Process</button>
+                                <button onclick="analyzeAndAdd()" style="background:var(--primary); color:white; border:none; padding:10px 25px; border-radius:8px; font-weight:600; cursor:pointer;">Analyze Ticket</button>
+                            </div>
+                            <div id="ai-output" style="margin-top:15px; padding:10px; background:#E8F5E9; border-left:4px solid #2E7D32; display:none; font-size:13px; border-radius:4px;">
+                                <strong>AI Result:</strong> <span id="ai-res-text"></span>
                             </div>
                         </div>
-                        <div id="ai-output" style="margin-top:15px; display:none; padding:10px; background:#f0f2f5; border-radius:8px;">
-                            <strong id="ai-cat"></strong> - <span id="ai-sent"></span>
+
+                        <div class="card analytics-section">
+                            <div class="card-header">Complaint Category Volume</div>
+                            <div style="height:100%"><canvas id="dashboardChart"></canvas></div>
                         </div>
-                    </div>
 
-                    <div class="card analytics-section">
-                        <div class="card-header"><div class="card-title">Live Volume</div></div>
-                        <div style="height:350px"><canvas id="dashboardChart"></canvas></div>
-                    </div>
-
-                    <div class="card feed-section">
-                        <div class="card-header"><div class="card-title">Recent Activity</div></div>
-                        <table class="data-table">
-                            <thead><tr><th>ID</th><th>Complaint</th><th>Category</th><th>Sentiment</th><th>Priority</th></tr></thead>
-                            <tbody id="dashboard-table-body"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="view-analytics" class="app-view">
-                <div class="analytics-grid">
-                    <div class="grid-kpi-row">
-                        <div class="card kpi-card"><div><span style="color:#A3AED0; font-size:11px">TOTAL</span><div class="kpi-val">24,500</div></div><i class="fas fa-chart-bar" style="font-size:24px; color:#4318FF; background:#F4F7FE; padding:10px; border-radius:50%"></i></div>
-                        <div class="card kpi-card"><div><span style="color:#A3AED0; font-size:11px">SOLVED</span><div class="kpi-val">15,200</div></div><i class="fas fa-check" style="font-size:24px; color:#05CD99; background:#F4F7FE; padding:10px; border-radius:50%"></i></div>
-                        
-                        <div class="card kpi-card" onclick="openPendingModal()" style="cursor: pointer; border: 1px solid #FFC107;">
-                            <div><span style="color:#A3AED0; font-size:11px">PENDING</span><div class="kpi-val" style="color:#FFC107">8,100</div></div>
-                            <i class="fas fa-clock" style="font-size:24px; color:#FFC107; background:#FFF9E6; padding:10px; border-radius:50%"></i>
+                        <div class="card feed-section">
+                            <div class="card-header">Recent Grievance Logs</div>
+                            <table class="gov-table">
+                                <thead><tr><th>Ticket ID</th><th>Complaint Summary</th><th>Category</th><th>Sentiment</th><th>Priority</th></tr></thead>
+                                <tbody id="dashboard-table-body"></tbody>
+                            </table>
                         </div>
-                        
-                        <div class="card kpi-card"><div><span style="color:#A3AED0; font-size:11px">SPAM</span><div class="kpi-val">1,200</div></div><i class="fas fa-ban" style="font-size:24px; color:#E31A1C; background:#FFE2E5; padding:10px; border-radius:50%"></i></div>
-                    </div>
 
-                    <div class="card grid-col-1">
-                        <div class="card-header"><div class="card-title">Category-wise Sentiment</div></div>
-                        <div style="height:400px"><canvas id="stackedBarChart"></canvas></div>
-                    </div>
-
-                    <div class="card grid-col-2-top">
-                        <div class="card-header"><div class="card-title">High Priority (AI)</div></div>
-                        <div class="priority-item"><div><strong>#IP-9928</strong><div style="font-size:11px">Medicine Delivery Delayed</div></div><span class="badge-crit">CRITICAL</span></div>
-                        <div class="priority-item"><div><strong>#IP-9927</strong><div style="font-size:11px">Passport Lost in Transit</div></div><span class="badge-crit">CRITICAL</span></div>
-                    </div>
-
-                    <div class="card grid-col-2-btm">
-                        <div class="card-header"><div class="card-title">Overall Sentiment</div></div>
-                        <div style="height:200px; display:flex; justify-content:center;"><canvas id="donutChart"></canvas></div>
-                    </div>
-
-                    <div class="card grid-col-3-top">
-                        <div class="card-header"><div class="card-title">Geographic Heatmap</div></div>
-                        <div id="india-map" style="height:250px; border-radius:12px;"></div>
-                    </div>
-
-                    <div class="card grid-col-3-btm">
-                        <div class="card-header"><div class="card-title">Trends</div></div>
-                        <div style="height:200px"><canvas id="trendChart"></canvas></div>
                     </div>
                 </div>
-            </div>
 
-            <div id="view-complaints" class="app-view">
-                <div class="card">
-                    <h3>Full Database</h3>
-                    <table class="data-table"><thead><tr><th>ID</th><th>Customer</th><th>Complaint</th><th>Category</th></tr></thead><tbody id="full-table-body"></tbody></table>
+                <div id="view-analytics" class="app-view">
+                    <div class="analytics-grid">
+                        <div class="grid-kpi-row">
+                            <div class="card kpi-card"><div><span class="kpi-title">TOTAL</span><div class="kpi-value">24,500</div></div></div>
+                            <div class="card kpi-card"><div><span class="kpi-title">SOLVED</span><div class="kpi-value" style="color:green">15,200</div></div></div>
+                            <div class="card kpi-card card-pending" onclick="openPendingModal()"><div><span class="kpi-title" style="color:#D35400">PENDING (CLICK)</span><div class="kpi-value" style="color:#D35400">8,100</div></div></div>
+                            <div class="card kpi-card"><div><span class="kpi-title">SPAM/FAKE</span><div class="kpi-value" style="color:gray">1,200</div></div></div>
+                        </div>
+                        <div class="card a-col-1"><div class="card-header">Category Sentiment Analysis</div><div style="height:350px"><canvas id="stackedBarChart"></canvas></div></div>
+                        <div class="card a-col-2-top"><div class="card-header" style="color:#C62828">High Priority (AI Detected)</div><div style="background:#FFEBEE; padding:10px; margin-bottom:5px; border-left:4px solid #C62828; border-radius:4px;"><strong>#IP-9928</strong><br><small>Medicine Delayed (Urgent)</small></div></div>
+                        <div class="card a-col-2-btm"><div class="card-header">Overall Sentiment</div><div style="height:150px; display:flex; justify-content:center;"><canvas id="donutChart"></canvas></div></div>
+                        <div class="card a-col-3-top"><div class="card-header">Heatmap</div><div id="india-map" style="height:100%; border-radius:4px;"></div></div>
+                        <div class="card a-col-3-btm"><div class="card-header">Trends</div><canvas id="trendChart"></canvas></div>
+                    </div>
                 </div>
-            </div>
-            <div id="view-config" class="app-view"><div class="card"><h3>Settings</h3></div></div>
 
-        </div>
-    </main>
+                <div id="view-complaints" class="app-view">
+                    <div class="card">
+                        <div class="card-header">Full Grievance Database</div>
+                        <table class="gov-table"><thead><tr><th>ID</th><th>Customer Name</th><th>Issue Description</th><th>Category</th><th>Status</th></tr></thead><tbody id="full-table-body"></tbody></table>
+                    </div>
+                </div>
+
+                <div id="view-config" class="app-view"><div class="card"><h3>System Configuration</h3><p>Authorized personnel only.</p></div></div>
+
+            </div>
+        </main>
+    </div>
 
     <div id="pendingModal" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 style="margin:0; font-family:'Outfit'; color:#2B3674;">Pending Actions Analytics</h2>
-                <span class="modal-close" onclick="closePendingModal()">&times;</span>
+        <div class="modal-box">
+            <div class="modal-header-strip">
+                <h3 style="margin:0; color:var(--primary);">Pending Actions Analytics Report</h3>
+                <span onclick="closePendingModal()" style="cursor:pointer; font-size:24px; color:#999;">&times;</span>
             </div>
-            
-            <div class="modal-summary-row">
-                <div class="summary-block"><div class="sb-label">Damaged/Lost</div><div class="sb-count" style="color:#E31A1C">412</div></div>
-                <div class="summary-block"><div class="sb-label">Delays</div><div class="sb-count" style="color:#FFC107">1,205</div></div>
-                <div class="summary-block"><div class="sb-label">Financial</div><div class="sb-count" style="color:#4318FF">320</div></div>
-                <div class="summary-block"><div class="sb-label">Fake/Spam</div><div class="sb-count" style="color:#05CD99">89</div></div>
+            <div class="modal-stats">
+                <div class="stat-block"><div style="font-size:20px; font-weight:bold; color:#C62828">412</div><div style="font-size:11px;">LOST/DAMAGED</div></div>
+                <div class="stat-block"><div style="font-size:20px; font-weight:bold; color:#F57F17">1,205</div><div style="font-size:11px;">DELAYS</div></div>
+                <div class="stat-block"><div style="font-size:20px; font-weight:bold; color:#1976D2">320</div><div style="font-size:11px;">FINANCIAL</div></div>
+                <div class="stat-block"><div style="font-size:20px; font-weight:bold; color:#388E3C">89</div><div style="font-size:11px;">FAKE</div></div>
+                <div class="stat-block"><div style="font-size:20px; font-weight:bold; color:#555">540</div><div style="font-size:11px;">GENERAL</div></div>
             </div>
+            <div style="height:350px; width:100%; border:1px solid #EEE; padding:10px; border-radius:8px;"><canvas id="pendingBarChart"></canvas></div>
+        </div>
+    </div>
 
-            <div style="height:400px; width:100%;">
-                <canvas id="pendingBarChart"></canvas>
+    <div id="ticketModal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 600px;">
+            <div class="modal-header-strip">
+                <h3 style="margin:0; color:var(--primary);">Ticket Details</h3>
+                <span onclick="closeTicketModal()" style="cursor:pointer; font-size:24px; color:#999;">&times;</span>
+            </div>
+            <div class="ticket-popup-grid">
+                <div style="grid-column: span 2;">
+                    <div class="tp-label">Complaint ID</div>
+                    <div class="tp-value" id="tm-id" style="font-weight:700; color:var(--primary);">...</div>
+                </div>
+                <div>
+                    <div class="tp-label">Category</div>
+                    <div class="tp-value" id="tm-cat">...</div>
+                </div>
+                <div>
+                    <div class="tp-label">Priority</div>
+                    <span id="tm-prio" class="tp-status" style="background:orange;">...</span>
+                </div>
+                <div style="grid-column: span 2;">
+                    <div class="tp-label">Full Complaint Text</div>
+                    <div class="tp-value" id="tm-msg" style="height:100px; overflow-y:auto; border:1px solid #eee; background:#fff;">...</div>
+                </div>
+                <div>
+                    <div class="tp-label">Sentiment Analysis</div>
+                    <div class="tp-value" id="tm-sent">...</div>
+                </div>
+            </div>
+            <div style="margin-top:20px; text-align:right;">
+                <button onclick="closeTicketModal()" style="background:#555; color:white; border:none; padding:8px 20px; border-radius:4px; cursor:pointer;">Close</button>
             </div>
         </div>
     </div>
@@ -296,60 +315,50 @@
         const API_URL = "http://127.0.0.1:5000/api";
         let dashboardChart, stackedBarChart, donutChart, trendChart, pendingBarChart;
 
-        // --- MODAL FUNCTIONS ---
-        function openPendingModal() {
-            const modal = document.getElementById('pendingModal');
-            modal.classList.add('open');
-            initPendingChart();
-        }
+        // MOCK DATA (Ensure Feed is never empty)
+        const mockTickets = [
+            {ID:"IP-1001", Complaint:"Package stuck at Mumbai Hub for 3 days", Category:"Speed Post", Sentiment:"Negative", Priority:"High", Status:"Pending", Customer:"Ravi K."},
+            {ID:"IP-1002", Complaint:"ATM card not received yet", Category:"Banking", Sentiment:"Neutral", Priority:"Medium", Status:"Resolved", Customer:"Sneha P."},
+            {ID:"IP-1003", Complaint:"Staff was rude at Delhi GPO counter", Category:"Staff", Sentiment:"Negative", Priority:"High", Status:"Open", Customer:"Amit V."},
+            {ID:"IP-1004", Complaint:"Tracking details not updating", Category:"General", Sentiment:"Neutral", Priority:"Low", Status:"Pending", Customer:"Priya S."},
+            {ID:"IP-1005", Complaint:"Very fast delivery, thanks!", Category:"Speed Post", Sentiment:"Positive", Priority:"Low", Status:"Resolved", Customer:"Vikram R."}
+        ];
 
-        function closePendingModal() {
-            document.getElementById('pendingModal').classList.remove('open');
-        }
-
-        function initPendingChart() {
-            if (pendingBarChart) return; // Already exists
-            const ctx = document.getElementById('pendingBarChart').getContext('2d');
-            pendingBarChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Damaged/Lost', 'Delivery Delay', 'Financial Services', 'Fake Complaint', 'General Enquiry', 'Staff Behaviour', 'Others'],
-                    datasets: [{
-                        label: 'Pending Count',
-                        data: [412, 1205, 320, 89, 540, 210, 150],
-                        backgroundColor: ['#E31A1C', '#FFC107', '#4318FF', '#05CD99', '#A3AED0', '#FF7F50', '#888'],
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, grid: { borderDash: [5, 5] } }, x: { grid: { display: false } } }
-                }
-            });
-        }
-
-        // --- NAVIGATION ---
         function switchView(viewId) {
             $('.nav-item').removeClass('active');
-            $(`.nav-item:contains('${viewId.charAt(0).toUpperCase() + viewId.slice(1)}')`).addClass('active'); 
+            $(`.nav-item[onclick*="${viewId}"]`).addClass('active');
             $('.app-view').removeClass('active');
             $(`#view-${viewId}`).addClass('active');
-            $('#page-heading').text(viewId === 'dashboard' ? 'Dashboard Overview' : viewId.charAt(0).toUpperCase() + viewId.slice(1));
-            
+            const titles = { 'dashboard': 'Dashboard Overview', 'analytics': 'Analytics & Reports', 'complaints': 'Grievance Database', 'config': 'System Config' };
+            $('#page-heading').text(titles[viewId]);
             if(viewId === 'dashboard' || viewId === 'complaints') fetchAllData();
-            if(viewId === 'analytics') initAnalyticsCharts();
+            if(viewId === 'analytics') setTimeout(initAnalyticsCharts, 100);
         }
+
+        // --- MODAL FUNCTIONS ---
+        function openPendingModal() { document.getElementById('pendingModal').classList.add('open'); setTimeout(initPendingChart, 200); }
+        function closePendingModal() { document.getElementById('pendingModal').classList.remove('open'); }
+
+        function openTicketModal(id, msg, cat, sent, prio) {
+            $('#tm-id').text(id);
+            $('#tm-msg').text(msg);
+            $('#tm-cat').text(cat);
+            $('#tm-sent').text(sent);
+            $('#tm-prio').text(prio).css('background', prio === 'High' ? '#C62828' : (prio === 'Medium' ? '#F39C12' : '#2E7D32'));
+            document.getElementById('ticketModal').classList.add('open');
+        }
+        function closeTicketModal() { document.getElementById('ticketModal').classList.remove('open'); }
 
         $(document).ready(function() {
             initVoice();
             initDashboardChart();
+            // Force load mock data immediately so UI isn't empty
+            renderTables(mockTickets);
+            // Then try to fetch real data
             fetchAllData();
             setInterval(fetchAllData, 5000); 
         });
 
-        // --- VOICE ---
         function initVoice() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const micBtn = document.getElementById('mic-trigger');
@@ -357,108 +366,119 @@
             if (SpeechRecognition) {
                 const recognition = new SpeechRecognition();
                 recognition.continuous = false; recognition.lang = 'en-IN';
-                micBtn.addEventListener('click', () => { micBtn.classList.toggle('mic-active') ? recognition.start() : recognition.stop(); });
+                micBtn.addEventListener('click', () => { micBtn.classList.toggle('active') ? recognition.start() : recognition.stop(); });
                 recognition.onresult = (e) => { textArea.value += e.results[0][0].transcript; };
-                recognition.onend = () => { micBtn.classList.remove('mic-active'); };
+                recognition.onend = () => { micBtn.classList.remove('active'); };
             }
         }
 
-        // --- DATA ---
         async function fetchAllData() {
             try {
                 const res = await fetch(`${API_URL}/tickets`);
                 const tickets = await res.json();
-                renderTables(tickets);
+                if(tickets && tickets.length > 0) renderTables(tickets);
                 const statsRes = await fetch(`${API_URL}/stats`);
                 const stats = await statsRes.json();
-                updateKPIs(stats);
-            } catch (e) { console.log("Backend offline, using mocks if needed"); }
+                if(stats.kpi) {
+                    $('#kpi-total').text(stats.kpi.total);
+                    $('#kpi-resolved').text(stats.kpi.resolved);
+                    $('#kpi-pending').text(stats.kpi.pending);
+                }
+            } catch (e) { console.log("Using Mock Data"); }
         }
 
         async function analyzeAndAdd() {
             const text = $('#manual-text').val();
             if(!text) return;
-            $('#process-ai').text('Processing...');
             try {
                 const res = await fetch(`${API_URL}/analyze`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({text}) });
                 const data = await res.json();
-                $('#ai-output').show().html(`<strong>${data.Category}</strong> (${data.Sentiment})`);
+                $('#ai-output').show();
+                $('#ai-res-text').text(`${data.Category} - ${data.Sentiment} (Priority: ${data.Priority})`);
                 $('#manual-text').val('');
                 fetchAllData();
-            } catch(e) { alert("Backend Error"); }
-            $('#process-ai').text('Process');
+            } catch(e) { alert("Error: Backend not reachable"); }
         }
 
         function renderTables(tickets) {
+            // SIDEBAR LIST
             const list = $('#sidebar-list'); list.empty();
-            tickets.slice(0, 10).forEach(t => {
-                const color = t.Priority === 'High' ? 'red' : 'green';
-                list.append(`<div class="yt-row" onclick="switchView('complaints')"><div style="flex:1;">${t.Category}</div><div class="priority-dot" style="background:${color}"></div></div>`);
+            tickets.slice(0, 15).forEach(t => {
+                let color = t.Priority === 'High' ? '#C62828' : '#00B894';
+                // ESCAPE STRINGS FOR ONCLICK
+                const safeMsg = t.Complaint.replace(/'/g, "\\'");
+                list.append(`
+                    <div class="yt-row" onclick="openTicketModal('${t.ID}', '${safeMsg}', '${t.Category}', '${t.Sentiment}', '${t.Priority}')">
+                        <div class="priority-dot" style="background:${color}"></div>
+                        <div style="flex:1; margin-left:10px; color:white;">${t.Category}</div>
+                    </div>
+                `);
             });
+
+            // DASHBOARD TABLE
             const tbody = $('#dashboard-table-body'); tbody.empty();
             tickets.slice(0, 5).forEach(t => {
-                tbody.append(`<tr><td>${t.ID}</td><td>${t.Complaint.substring(0,30)}...</td><td>${t.Category}</td><td>${t.Sentiment}</td><td>${t.Priority}</td></tr>`);
+                let badge = t.Priority === 'High' ? 'st-high' : 'st-low';
+                tbody.append(`<tr><td>${t.ID}</td><td>${t.Complaint.substring(0,40)}...</td><td>${t.Category}</td><td>${t.Sentiment}</td><td><span class="status-badge ${badge}">${t.Priority}</span></td></tr>`);
             });
+
+            // FULL TABLE
             const ftbody = $('#full-table-body'); ftbody.empty();
-            tickets.forEach(t => ftbody.append(`<tr><td>${t.ID}</td><td>${t.Customer}</td><td>${t.Complaint}</td><td>${t.Category}</td></tr>`));
+            tickets.forEach(t => ftbody.append(`<tr><td>${t.ID}</td><td>${t.Customer || 'Unknown'}</td><td>${t.Complaint}</td><td>${t.Category}</td><td>${t.Status}</td></tr>`));
         }
 
-        function updateKPIs(data) {
-            $('#kpi-total').text(data.kpi.total);
-            $('#kpi-resolved').text(data.kpi.resolved);
-            $('#kpi-pending').text(data.kpi.pending);
-        }
-
-        // --- CHARTS ---
         function initDashboardChart() {
             const ctx = document.getElementById('dashboardChart').getContext('2d');
             dashboardChart = new Chart(ctx, {
                 type: 'bar',
-                data: { labels: ['Speed Post', 'Banking', 'Staff', 'General'], datasets: [{ label: 'Volume', data: [12, 5, 3, 2], backgroundColor: '#D32F2F', borderRadius: 4 }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { display: false } }, x: { grid: { display: false } } } }
+                data: { labels: ['Speed Post', 'Banking', 'Staff', 'General'], datasets: [{ label: 'Volume', data: [12, 5, 3, 2], backgroundColor: '#B32626', borderRadius: 2 }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        function initPendingChart() {
+            if (pendingBarChart) return;
+            const ctx = document.getElementById('pendingBarChart').getContext('2d');
+            pendingBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Damaged/Lost', 'Delivery Delay', 'Financial', 'Fake', 'General', 'Staff', 'Others'],
+                    datasets: [{ label: 'Pending', data: [412, 1205, 320, 89, 540, 210, 150], backgroundColor: ['#C62828', '#F57F17', '#1976D2', '#388E3C', '#777', '#E64A19', '#999'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
         }
 
         function initAnalyticsCharts() {
-            if(stackedBarChart) return; 
-
-            // 1. Stacked Bar (HORIZONTAL)
+            if(stackedBarChart) return;
             const ctxBar = document.getElementById('stackedBarChart').getContext('2d');
             stackedBarChart = new Chart(ctxBar, {
                 type: 'bar',
                 data: {
-                    labels: ['Delayed Delivery', 'Parcel Lost', 'Staff Behavior', 'Speed Post', 'Tech Failure'],
+                    labels: ['Delayed', 'Lost', 'Staff', 'Speed Post', 'Tech'],
                     datasets: [
-                        { label: 'Negative', data: [35, 30, 28, 42, 30], backgroundColor: '#E31A1C' },
-                        { label: 'Neutral', data: [40, 45, 35, 30, 35], backgroundColor: '#FFC107' },
-                        { label: 'Positive', data: [25, 25, 37, 28, 35], backgroundColor: '#05CD99' }
+                        { label: 'Neg', data: [35, 30, 28, 42, 30], backgroundColor: '#C62828' },
+                        { label: 'Neu', data: [40, 45, 35, 30, 35], backgroundColor: '#F57F17' },
+                        { label: 'Pos', data: [25, 25, 37, 28, 35], backgroundColor: '#2E7D32' }
                     ]
                 },
-                options: { 
-                    indexAxis: 'y', 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    scales: { x: { stacked: true }, y: { stacked: true } } 
-                }
+                options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true } } }
             });
 
-            // 2. Donut
             const ctxDonut = document.getElementById('donutChart').getContext('2d');
             donutChart = new Chart(ctxDonut, {
                 type: 'doughnut',
-                data: { labels: ['Neg', 'Neu', 'Pos'], datasets: [{ data: [65, 25, 10], backgroundColor: ['#E31A1C', '#FFC107', '#05CD99'] }] },
+                data: { labels: ['Neg', 'Neu', 'Pos'], datasets: [{ data: [65, 25, 10], backgroundColor: ['#C62828', '#F57F17', '#2E7D32'] }] },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
             });
 
-            // 3. Trend
             const ctxTrend = document.getElementById('trendChart').getContext('2d');
             trendChart = new Chart(ctxTrend, {
                 type: 'line',
-                data: { labels: ['Jan','Feb','Mar','Apr','May'], datasets: [{ label: 'Inflow', data: [65, 59, 80, 81, 56], borderColor: '#E31A1C' }] },
-                options: { responsive: true, maintainAspectRatio: false, scales: { y: { display:false }, x: { display:false } } }
+                data: { labels: ['Jan','Feb','Mar','Apr','May'], datasets: [{ label: 'Inflow', data: [65, 59, 80, 81, 56], borderColor: '#B32626', tension:0.4 }] },
+                options: { responsive: true, maintainAspectRatio: false }
             });
 
-            // 4. Map
             var map = L.map('india-map', { zoomControl: false }).setView([22.5937, 78.9629], 4);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
             L.circle([28.6139, 77.2090], { color: 'red', fillColor: '#f03', fillOpacity: 0.5, radius: 50000 }).addTo(map);
