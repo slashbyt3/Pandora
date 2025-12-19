@@ -1,68 +1,129 @@
-/* style.css - Official India Post Government Vibe */
+/* --- 1. FONTS & ICONS --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
 
-/* 1. Main Background */
+/* --- 2. THEME VARIABLES (From Friend's HTML) --- */
+:root {
+    --bg-body: #FFFFFF;
+    --bg-sidebar: #F7F7F5;
+    --bg-hover: #EFEFEF;
+    --border-color: #E9E9E7;
+    --text-main: #37352F;
+    --text-muted: #787774;
+    --primary: #D32F2F; /* Kept your India Post Red */
+    
+    /* Tag Colors */
+    --tag-red-bg: #FFDCE0; --tag-red-text: #D1576B;
+    --tag-blue-bg: #D3E5EF; --tag-blue-text: #2383E2;
+    --tag-green-bg: #DBEDDB; --tag-green-text: #4C8B58;
+    --tag-yellow-bg: #FDEDC8; --tag-yellow-text: #CB9244;
+    --tag-gray-bg: #F1F1EF; --tag-gray-text: #787774;
+}
+
+/* --- 3. LAYOUT RESET --- */
 .stApp {
-    background-color: #FFFFFF !important;
-    color: #333333 !important;
+    background-color: var(--bg-body);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
 }
 
-/* 2. Sidebar - Slightly grey to separate Admin area */
+.main .block-container {
+    padding-top: 2rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    max-width: 100%;
+}
+
+/* --- 4. SIDEBAR STYLING --- */
 section[data-testid="stSidebar"] {
-    background-color: #F8F9FA !important;
-    border-right: 1px solid #E0E0E0;
+    background-color: var(--bg-sidebar);
+    border-right: 1px solid var(--border-color);
 }
 
-/* 3. INDIA POST BUTTONS (The Red Vibe) */
-div.stButton > button {
-    background-color: #D32F2F !important; /* India Post Red */
-    color: white !important;
+/* Sidebar Menu Buttons (Styled to look like text links) */
+section[data-testid="stSidebar"] .stButton button {
+    background-color: transparent;
+    color: var(--text-muted);
     border: none;
-    border-radius: 6px; /* Slightly squarer than Apple, looks more "Official" */
-    padding: 12px 28px;
-    font-weight: 600;
-    text-transform: uppercase; /* Makes it feel like a command */
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    transition: all 0.2s ease;
+    box-shadow: none;
+    text-align: left;
+    padding: 8px 12px;
+    width: 100%;
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    transition: background 0.1s;
 }
 
+section[data-testid="stSidebar"] .stButton button:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-main);
+}
+
+/* Separator Line */
+hr {
+    margin: 1.5em 0;
+    border-color: var(--border-color);
+    opacity: 1;
+}
+
+/* --- 5. DASHBOARD CARDS (KPIs) --- */
+/* We will use HTML for the cards, but if standard metrics are used: */
+div[data-testid="stMetric"] {
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+/* --- 6. NOTION-STYLE TAGS --- */
+.n-tag {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 500;
+    display: inline-block;
+}
+.tag-red { background: var(--tag-red-bg); color: var(--tag-red-text); }
+.tag-blue { background: var(--tag-blue-bg); color: var(--tag-blue-text); }
+.tag-green { background: var(--tag-green-bg); color: var(--tag-green-text); }
+.tag-yellow { background: var(--tag-yellow-bg); color: var(--tag-yellow-text); }
+.tag-gray { background: var(--tag-gray-bg); color: var(--tag-gray-text); }
+
+/* --- 7. COVER IMAGE HEADER --- */
+.notion-cover {
+    height: 160px;
+    background: #FDECC8; /* Beige cover from your image */
+    opacity: 0.6;
+    margin-top: -6rem;
+    margin-left: -10rem;
+    margin-right: -10rem;
+    margin-bottom: 2rem;
+}
+
+/* --- 8. ACTION BUTTONS (Analyze, Process) --- */
+div.stButton > button {
+    background-color: #2383E2; /* Notion Blue */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: none;
+}
 div.stButton > button:hover {
-    background-color: #B71C1C !important; /* Darker Red on hover */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transform: translateY(-1px);
+    background-color: #1a6fb0;
 }
 
-/* 4. Active State */
-div.stButton > button:active {
-    background-color: #D32F2F !important;
-    transform: translateY(1px);
-}
-
-/* 5. Inputs (Official Form Style) */
-.stTextInput > div > div > input, .stTextArea > div > div > textarea {
-    background-color: #FFFFFF !important;
-    color: #333333 !important;
-    border: 1px solid #CCCCCC; /* Standard Grey Border */
-    border-radius: 4px; /* Standard Form Radius */
-}
-
-/* Focus State - Red Glow */
-.stTextInput > div > div > input:focus, .stTextArea > div > div > textarea:focus {
-    border: 1px solid #D32F2F !important;
-    box-shadow: 0 0 0 1px #D32F2F;
-}
-
-/* 6. Text Styling */
-h1, h2, h3 {
-    color: #D32F2F !important; /* Headings are Red */
-    font-family: 'Arial', sans-serif;
-}
-
-p, label, .stMarkdown, .stDataFrame {
-    color: #333333 !important;
-}
-
-/* 7. Success/Error Messages */
-.stAlert {
+/* --- 9. INPUT FIELDS --- */
+.stTextArea textarea {
+    background-color: white;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
 }

@@ -4,210 +4,281 @@ import numpy as np
 import altair as alt
 from transformers import pipeline
 import time
-import random
 
 # --- PAGE CONFIGURATION ---
-st.set_page_config(page_title="India Post AI Dashboard", page_icon="📮", layout="wide")
+st.set_page_config(page_title="India Post Workspace", page_icon="📬", layout="wide")
 
-# --- CUSTOM CSS ---
-st.markdown("""
-    <style>
-    /* 1. Main Background */
-    .stApp { background-color: #F8F9FA; color: #333; }
-    
-    /* 2. Sidebar Styling to mimic the reference image */
-    section[data-testid="stSidebar"] { 
-        background-color: #FFFFFF; 
-        border-right: 1px solid #E0E0E0;
-    }
-    
-    /* 3. Cards */
-    div[data-testid="stMetric"], div[data-testid="stContainer"] {
-        background-color: #FFFFFF;
-        border: 1px solid #E0E0E0;
-        border-radius: 8px;
-        padding: 15px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-    
-    /* 4. Buttons (India Post Red) */
-    div.stButton > button {
-        background-color: #D32F2F; color: white; border: none;
-        border-radius: 4px; padding: 8px 16px;
-    }
-    div.stButton > button:hover { background-color: #B71C1C; }
-    
-    </style>
-    """, unsafe_allow_html=True)
+# --- LOAD CSS ---
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-# --- 1. SETUP AI MODELS & DATA ---
+local_css("style.css")
+
+# --- SETUP AI ---
 @st.cache_resource
 def load_classifier():
     return pipeline("zero-shot-classification", model="valhalla/distilbart-mnli-12-3")
 
-with st.spinner("Initializing AI Core..."):
+with st.spinner("Loading Workspace..."):
     classifier = load_classifier()
 
-LABELS = ["Delivery Delay", "Staff Behavior", "Damaged/Lost", "Financial Services", "General Inquiry", "Fake/Spam Complaint"]
+LABELS = ["Parcel Delivery Delay", "Staff Misconduct", "Damaged Article", "Financial Services", "General Inquiry", "Spam"]
 
-# --- MOCK DATA GENERATOR ---
+# --- SESSION STATE ---
+if 'page' not in st.session_state: st.session_state.page = "Dashboard"
 if 'data' not in st.session_state:
-    data = []
-    names = ["Amit Sharma", "Priya Singh", "Rahul Verma", "Sneha Gupta", "Mohd Faiz"]
-    statuses = ["Open", "In Progress", "Resolved", "Pending Review"]
-    sentiments = ["Negative", "Neutral", "Positive"]
-    
-    for i in range(50):
-        category = random.choice(LABELS)
-        data.append({
-            "ID": f"TKT-{1000+i}",
-            "Customer": random.choice(names),
-            "Complaint": f"Sample complaint text regarding {category}...",
-            "Category": category,
-            "Priority": "High" if category in ["Damaged/Lost", "Staff Behavior"] else "Medium",
-            "Status": random.choice(statuses),
-            "Sentiment": random.choice(sentiments),
-            "Date": "2025-12-19"
-        })
-    st.session_state.data = pd.DataFrame(data)
+    st.session_state.data = pd.DataFrame(columns=["ID", "Customer", "Complaint", "Category", "Priority", "Status", "Sentiment", "Date", "Draft_Reply"])
 
 df = st.session_state.data
 
-# --- FUNCTION: COMPLAINT DETAIL POPUP ---
-@st.dialog("Ticket Analysis Details")
-def show_complaint_details(row):
-    st.markdown(f"### Ticket ID: {row['ID']}")
-    st.caption(f"Filed on {row['Date']} by {row['Customer']}")
-    st.divider()
+# --- SIDEBAR (NOTION STYLE) ---
+with st.sidebar:
+    # 1. Brand Header (HTML from Friend's code)
+    st.markdown("""
+        <div style="padding: 10px 0px; display:flex; align-items:center; gap:8px; margin-bottom:10px; cursor:pointer;">
+            <div style="width:22px; height:22px; background:#D32F2F; color:white; border-radius:4px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold;">IP</div>
+            <div style="font-weight:600; color:#37352F; font-size:14px;">India Post Workspace</div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # 2. Navigation (Styled as links via CSS)
+    if st.button("⊞  Dashboard", use_container_width=True): st.session_state.page = "Dashboard"; st.rerun()
+    if st.button("📈  Analytics", use_container_width=True): st.session_state.page = "Analytics"; st.rerun()
+    if st.button("⚙️  Configuration", use_container_width=True): st.session_state.page = "Config"; st.rerun()
+    if st.button("📥  Complaints DB", use_container_width=True): st.session_state.page = "Complaints"; st.rerun()
+
+    # 3. Active Tickets List
+    st.markdown("""
+        <div style="padding: 24px 12px 8px 12px; font-size:11px; font-weight:600; color:#787774; display:flex; justify-content:space-between; letter-spacing:0.5px;">
+            <span>ACTIVE TICKETS</span>
+            <span style="cursor:pointer;">+</span>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Your Functionality: Sidebar List Logic
+    if df.empty:
+        st.caption("No active tickets.")
+    else:
+        # We use a container so scrolling looks nice
+        with st.container():
+            # Loop through data (Your Logic)
+            for i, row in df.head(15).iterrows():
+                # Notion-style row look
+                icon = "📄"
+                if "Damaged" in row['Category']: icon = "📦"
+                if "Financial" in row['Category']: icon = "💰"
+                
+                label = f"{icon} {row['Customer'].split()[0]}'s Ticket"
+                
+                # The Click Functionality
+                if st.button(label, key=f"btn_{row['ID']}", use_container_width=True):
+                    st.session_state.selected_ticket = row
+                    st.session_state.page = "TicketDetail"
+                    st.rerun()
+
+# --- MAIN CONTENT AREA ---
+
+# 1. Notion Cover Image (From Friend's HTML)
+st.markdown('<div class="notion-cover"></div>', unsafe_allow_html=True)
+
+# 2. Header Block
+st.markdown("""
+    <div style="margin-bottom:40px;">
+        <div style="font-size:72px; margin-bottom:0px; margin-left:-5px;">📬</div>
+        <h1 style="font-size:40px; font-weight:700; margin:0; color:#37352F;">Complaint Management System</h1>
+        <div style="display:flex; gap:16px; color:#787774; font-size:14px; margin-top:12px; border-bottom:1px solid #E9E9E7; padding-bottom:24px;">
+            <span><i class="far fa-user"></i> Admin Workspace</span>
+            <span><i class="far fa-clock"></i> Updated just now</span>
+            <span><i class="far fa-comment"></i> 12 Comments</span>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+
+# --- VIEW: DASHBOARD ---
+if st.session_state.page == "Dashboard":
     
-    c1, c2 = st.columns(2)
+    # 3. KPI Cards (Your Data + Friend's HTML Structure)
+    st.subheader("Overview")
+    
+    k1, k2, k3, k4 = st.columns(4)
+    
+    # Helper to create HTML Card
+    def card(title, value, sub, color="gray"):
+        color_map = {"green": "#DBEDDB", "red": "#FFDCE0", "blue": "#D3E5EF", "gray": "#F1F1EF"}
+        text_map = {"green": "#4C8B58", "red": "#D1576B", "blue": "#2383E2", "gray": "#787774"}
+        
+        return f"""
+        <div style="border:1px solid #E9E9E7; border-radius:4px; padding:16px; background:white; height:100%;">
+            <div style="color:#787774; font-size:14px; display:flex; align-items:center; gap:6px;">
+                {title}
+            </div>
+            <div style="font-size:32px; font-weight:600; color:#37352F; margin-top:10px;">{value}</div>
+            <div style="margin-top:10px;">
+                <span style="background:{color_map[color]}; color:{text_map[color]}; padding:2px 6px; border-radius:4px; font-size:12px;">{sub}</span>
+            </div>
+        </div>
+        """
+
+    # Calculating Metrics (Your Logic)
+    total = len(df)
+    resolved = int(total * 0.72)
+    pending = int(total * 0.1)
+    
+    with k1: st.markdown(card("Total Complaints", total, "12% vs last mo", "green"), unsafe_allow_html=True)
+    with k2: st.markdown(card("AI Resolved", resolved, "72% Auto-rate", "blue"), unsafe_allow_html=True)
+    with k3: st.markdown(card("Pending", pending, "Needs Action", "red"), unsafe_allow_html=True)
+    with k4: st.markdown(card("Avg Response", "2.4h", "Stable", "gray"), unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # 4. Split Layout (Analytics + Manual Entry)
+    c1, c2 = st.columns([2, 1])
+    
     with c1:
-        st.info(f"**Category:** {row['Category']}")
-        p_color = "red" if row['Priority'] == "High" else "orange"
-        st.markdown(f"**Priority:** :{p_color}[{row['Priority']}]")
+        st.write("### 📊 Live Analytics")
+        if not df.empty:
+            # Clean Altair Chart
+            chart_data = df['Category'].value_counts().reset_index()
+            chart_data.columns = ['Category', 'Count']
+            chart = alt.Chart(chart_data).mark_bar(cornerRadius=3, color='#D32F2F').encode(
+                x=alt.X('Category', axis=alt.Axis(labelAngle=0, grid=False)),
+                y=alt.Y('Count', axis=alt.Axis(grid=False)),
+                tooltip=['Category', 'Count']
+            ).properties(height=280)
+            st.altair_chart(chart, use_container_width=True)
+        else:
+            st.info("No data. Upload CSV to see trends.")
+
     with c2:
-        st.info(f"**Status:** {row['Status']}")
-        st.markdown(f"**Sentiment:** {row['Sentiment']}")
-
-    st.markdown("#### Complaint Text")
-    st.text_area("Customer Message", row['Complaint'], disabled=True)
-    
-    st.markdown("#### AI Recommended Reply")
-    st.text_area("Draft Email", f"Dear {row['Customer']},\n\nWe apologize for the issue regarding {row['Category']}. Your ticket {row['ID']} is prioritized.\n\nRegards,\nIndia Post", height=150)
-    
-    col_a, col_b = st.columns(2)
-    if col_a.button("✅ Approve & Send"):
-        st.success("Reply Sent!")
-        time.sleep(1)
-        st.rerun()
-    if col_b.button("🚫 Mark as Spam"):
-        st.error("Ticket Closed as Spam")
-        time.sleep(1)
-        st.rerun()
-
-# --- 2. SIDEBAR NAVIGATION ---
-st.sidebar.image("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/India_Post_Logo.svg/1200px-India_Post_Logo.svg.png", width=120)
-st.sidebar.title("India Post AI")
-
-# Navigation Menu
-nav = st.sidebar.radio("Main Menu", ["Dashboard", "Analytics", "Settings", "AI Config"])
-
-st.sidebar.markdown("---")
-st.sidebar.markdown("**Grievance Handling**")
-
-# Interactive Complaints List in Sidebar
-with st.sidebar.expander("📂 All Complaints", expanded=True):
-    # Quick filters in sidebar
-    filter_cat = st.selectbox("Filter Category", ["All"] + LABELS, index=0)
-    
-    # Filter logic
-    sidebar_df = df if filter_cat == "All" else df[df['Category'] == filter_cat]
-    
-    # List of buttons
-    for i, row in sidebar_df.head(10).iterrows(): # Limiting to 10 for performance
-        if st.button(f"{row['ID']} - {row['Customer']}", key=f"btn_{row['ID']}", use_container_width=True):
-            show_complaint_details(row)
-
-# --- PAGE 1: DASHBOARD ---
-if nav == "Dashboard":
-    st.title("Overview")
-    
-    # Metrics
-    m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Total Complaints", len(df), "+12%")
-    m2.metric("AI Resolved", int(len(df)*0.72), "72% Rate")
-    m3.metric("Pending", int(len(df)*0.1), "-5%")
-    m4.metric("Avg Response", "2.4h", "Stable")
-    
-    st.divider()
-
-    # Split View: Manual Processor + CSV Upload
-    st.subheader("📝 Complaint Processing Unit")
-    
-    tab1, tab2 = st.tabs(["✍️ Manual Entry", "📂 Bulk CSV Upload"])
-    
-    with tab1:
-        c1, c2 = st.columns([2, 1])
-        with c1:
-            manual_text = st.text_area("Paste unstructured text/email here:", height=150)
-            if st.button("Analyze Now"):
+        st.write("### 🤖 Manual AI Analysis")
+        # Styled like a Notion Callout
+        with st.container(border=True):
+            st.caption("Paste unstructured text/email here:")
+            manual_text = st.text_area("Input", height=120, label_visibility="collapsed", placeholder="e.g. 'Speed Post delayed...'")
+            
+            if st.button("Analyze Now", use_container_width=True):
                 if manual_text:
+                    # Your AI Logic
                     res = classifier(manual_text, LABELS)
-                    st.success(f"**Predicted Category:** {res['labels'][0]}")
-                    st.info(f"**Confidence Score:** {res['scores'][0]*100:.2f}%")
-        with c2:
-            st.info("ℹ️ **AI Tip:** Paste full email body. The model detects spam and urgency automatically.")
+                    cat = res['labels'][0]
+                    conf = int(res['scores'][0]*100)
+                    
+                    # Result Display (Tags)
+                    st.markdown(f"""
+                        <div style="margin-top:10px; padding:10px; background:#F7F7F5; border-radius:4px;">
+                            <div style="font-size:12px; color:#787774;">DETECTED INTENT</div>
+                            <div style="margin-top:4px;">
+                                <span class="n-tag tag-blue">{cat}</span>
+                                <span class="n-tag tag-gray">{conf}% Confidence</span>
+                            </div>
+                        </div>
+                    """, unsafe_allow_html=True)
 
-    with tab2:
-        st.markdown("Upload your daily `complaints.csv` for batch processing.")
-        uploaded_file = st.file_uploader("Drag & Drop CSV File", type=["csv"])
+    # 5. Complaint Processing Unit (Functionality: CSV Upload)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.write("### 📥 Complaint Processing Unit")
+    
+    # Custom Notion-like file uploader area
+    with st.container(border=True):
+        st.markdown("**Bulk Upload (.csv)**")
+        uploaded_file = st.file_uploader("Upload CSV", type=["csv"], label_visibility="collapsed")
         
         if uploaded_file:
-            uploaded_df = pd.read_csv(uploaded_file)
-            st.dataframe(uploaded_df.head(3))
-            
             if st.button("Process Bulk File"):
-                progress = st.progress(0)
-                for i in range(100):
-                    time.sleep(0.01)
-                    progress.progress(i+1)
-                st.success("✅ Batch Analysis Complete! Reports generated.")
-                st.download_button("📥 Download Report", data=uploaded_df.to_csv(), file_name="processed_report.csv")
+                # --- YOUR EXACT LOGIC ---
+                raw_df = pd.read_csv(uploaded_file)
+                rename_map = {"Complaint_ID": "ID", "Customer_Name": "Customer", "Text": "Complaint", "Date": "Date"}
+                raw_df.rename(columns=rename_map, inplace=True)
+                
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                categories, priorities, sentiments, statuses, drafts = [], [], [], [], []
+                total_rows = len(raw_df)
+                
+                for index, row in raw_df.iterrows():
+                    status_text.text(f"Processing Ticket {index+1}/{total_rows}...")
+                    progress_bar.progress((index + 1) / total_rows)
+                    time.sleep(0.02) # Visual
+                    
+                    text = row['Complaint']
+                    res = classifier(text, LABELS)
+                    top_cat = res['labels'][0]
+                    categories.append(top_cat)
+                    
+                    if top_cat in ["Damaged Article", "Staff Misconduct"]:
+                        priorities.append("High"); sentiments.append("Negative")
+                    else:
+                        priorities.append("Medium"); sentiments.append("Neutral")
+                    
+                    statuses.append("Open")
+                    drafts.append(f"Dear {row['Customer']}, regarding {top_cat}...")
+                
+                raw_df['Category'] = categories; raw_df['Priority'] = priorities
+                raw_df['Sentiment'] = sentiments; raw_df['Status'] = statuses
+                raw_df['Draft_Reply'] = drafts
+                
+                st.session_state.data = raw_df
+                st.success("✅ Database Updated Successfully")
+                time.sleep(1); st.rerun()
 
-    st.divider()
-    
-    # Analytics Section (Bottom)
-    st.subheader("📊 Live Trends")
-    chart_col1, chart_col2 = st.columns(2)
-    
-    with chart_col1:
-        st.caption("Complaint Volume by Category")
-        chart_data = df['Category'].value_counts().reset_index()
-        chart_data.columns = ['Category', 'Count']
-        bar_chart = alt.Chart(chart_data).mark_bar(color='#D32F2F').encode(
-            x='Category', y='Count', tooltip=['Category', 'Count']
-        ).properties(height=300)
-        st.altair_chart(bar_chart, use_container_width=True)
+# --- VIEW: TICKET DETAIL (The Functionality triggered by sidebar) ---
+elif st.session_state.page == "TicketDetail":
+    if 'selected_ticket' in st.session_state:
+        row = st.session_state.selected_ticket
+        
+        # Navigation
+        st.button("← Back to Overview", on_click=lambda: st.session_state.update(page="Dashboard"))
+        
+        # Header
+        st.markdown(f"## Ticket: {row['ID']}")
+        st.markdown(f"**Customer:** {row['Customer']} &nbsp; | &nbsp; **Date:** {row['Date']}")
+        st.divider()
+        
+        c1, c2 = st.columns([2, 1])
+        
+        with c1:
+            st.markdown("#### 💬 Customer Message")
+            st.info(row['Complaint'])
+            
+            st.markdown("#### ✍️ Draft Reply")
+            st.text_area("Edit Draft", row.get('Draft_Reply', ''), height=200)
+            
+            if st.button("Send Response", type="primary"):
+                st.success("Message dispatched successfully.")
 
-    with chart_col2:
-        st.caption("Sentiment Distribution")
-        sent_data = df['Sentiment'].value_counts().reset_index()
-        sent_data.columns = ['Sentiment', 'Count']
-        pie = alt.Chart(sent_data).mark_arc(innerRadius=60).encode(
-            theta='Count',
-            color=alt.Color('Sentiment', scale=alt.Scale(domain=['Positive', 'Neutral', 'Negative'], range=['#2E7D32', '#F9A825', '#C62828']))
-        )
-        st.altair_chart(pie, use_container_width=True)
+        with c2:
+            # Notion Style Property List
+            st.markdown("#### 🧠 AI Analysis")
+            
+            # Helper for property row
+            def prop_row(label, value, color="tag-gray"):
+                return f"""
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #E9E9E7; align-items:center;">
+                    <span style="color:#787774; font-size:14px;">{label}</span>
+                    <span class="n-tag {color}">{value}</span>
+                </div>
+                """
+            
+            # Logic for colors
+            p_color = "tag-red" if row['Priority'] == "High" else "tag-yellow"
+            s_color = "tag-red" if row['Sentiment'] == "Negative" else "tag-green"
+            
+            st.markdown(prop_row("Category", row['Category'], "tag-blue"), unsafe_allow_html=True)
+            st.markdown(prop_row("Priority", row['Priority'], p_color), unsafe_allow_html=True)
+            st.markdown(prop_row("Sentiment", row['Sentiment'], s_color), unsafe_allow_html=True)
+            st.markdown(prop_row("Status", row['Status'], "tag-gray"), unsafe_allow_html=True)
 
-# --- OTHER PAGES (Placeholders) ---
-elif nav == "Analytics":
-    st.title("Deep Analytics")
-    st.info("Advanced historical data and trend forecasting module.")
+# --- VIEW: ANALYTICS ---
+elif st.session_state.page == "Analytics":
+    st.subheader("📈 Analytics & Reports")
+    if not df.empty:
+        st.bar_chart(df['Category'].value_counts())
+    else:
+        st.info("Upload data in Dashboard first.")
 
-elif nav == "Settings":
-    st.title("Admin Settings")
-    st.text_input("System Admin Email", value="admin@indiapost.gov.in")
-
-elif nav == "AI Config":
-    st.title("Model Configuration")
-    st.slider("Confidence Threshold", 0.0, 1.0, 0.75)
+# --- VIEW: CONFIG ---
+elif st.session_state.page == "Config":
+    st.subheader("⚙️ Settings")
+    st.text_input("System Admin", "admin@indiapost.gov.in")
