@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* --- 1. FONTS & ICONS --- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
@@ -127,3 +128,406 @@ div.stButton > button:hover {
     border: 1px solid var(--border-color);
     border-radius: 4px;
 }
+=======
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>India Post AI | Unified Operations</title>
+        
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <style>
+            :root {
+                --primary: #D32F2F; 
+                --text-main: #1d1d1f; 
+                --text-muted: #86868b;
+                --glass-bg: rgba(255, 255, 255, 0.65);
+                --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+                --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+                --blur-amount: blur(25px);
+            }
+
+            * { box-sizing: border-box; outline: none; }
+
+            body {
+                margin: 0;
+                font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+                background: 
+                    radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                    radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                    radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+                background: 
+                    radial-gradient(circle at 10% 20%, rgba(255, 225, 225, 1) 0%, rgba(255, 255, 255, 0) 40%),
+                    radial-gradient(circle at 90% 80%, rgba(216, 241, 255, 1) 0%, rgba(255, 255, 255, 0) 40%),
+                    linear-gradient(135deg, #f6f7f9 0%, #e3eeff 100%);
+                color: var(--text-main);
+                display: flex;
+                min-height: 100vh;
+                overflow-x: hidden;
+            }
+
+            /* --- UTILITIES --- */
+            .glass-panel {
+                background: var(--glass-bg);
+                backdrop-filter: var(--blur-amount);
+                -webkit-backdrop-filter: var(--blur-amount);
+                border: var(--glass-border);
+                box-shadow: var(--glass-shadow);
+                border-radius: 24px;
+                padding: 24px;
+            }
+
+            .btn-primary { background: var(--primary); color: white; width: 100%; padding: 12px; border: none; border-radius: 12px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+            .btn-primary:active { transform: scale(0.98); }
+            .btn-outline { background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.1); padding: 6px 12px; border-radius: 12px; cursor: pointer; font-size: 0.8rem; }
+            .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; display: inline-block; }
+            .badge-speed { background: rgba(0, 122, 255, 0.1); color: #007AFF; }
+            .badge-bank { background: rgba(255, 149, 0, 0.1); color: #FF9500; }
+            .badge-staff { background: rgba(255, 59, 48, 0.1); color: #FF3B30; }
+
+            /* --- SIDEBAR --- */
+            .sidebar {
+                width: 280px;
+                background: rgba(255, 255, 255, 0.6);
+                backdrop-filter: blur(30px);
+                border-right: 1px solid rgba(255, 255, 255, 0.3);
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                height: 100vh;
+                z-index: 100;
+                overflow-y: auto;
+                padding-bottom: 20px;
+            }
+            .sidebar::-webkit-scrollbar { width: 4px; }
+            .sidebar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+
+            .brand { padding: 30px 24px 20px 24px; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; background: rgba(255,255,255,0.01); backdrop-filter: blur(10px); z-index: 2; }
+            .brand h1 { font-size: 1.1rem; margin: 0; color: var(--primary); font-weight: 700; }
+            
+            .menu { list-style: none; padding: 10px 16px; margin: 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+            .menu li { margin-bottom: 5px; }
+            .menu a { display: flex; align-items: center; gap: 14px; padding: 12px 16px; text-decoration: none; color: var(--text-muted); border-radius: 14px; font-weight: 500; transition: all 0.2s; font-size: 0.95rem; cursor: pointer; }
+            .menu a:hover { background: rgba(255, 255, 255, 0.6); color: var(--text-main); }
+            .menu a.active { background: #fff; color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+            /* Sidebar List */
+            .sidebar-section-title { padding: 20px 24px 10px 24px; font-size: 1rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; }
+            .yt-sidebar-list { padding: 0 12px; }
+            .yt-row { display: flex; align-items: center; padding: 10px 12px; border-radius: 12px; cursor: pointer; transition: 0.2s; position: relative; }
+            .yt-row:hover { background: rgba(255,255,255,0.5); }
+            
+            .yt-avatar { width: 32px; height: 32px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: #fff; margin-right: 12px; flex-shrink: 0; }
+            
+            /* Avatar Colors */
+            .bg-A { background: linear-gradient(135deg, #FF512F, #DD2476); }
+            .bg-B { background: linear-gradient(135deg, #2193b0, #6dd5ed); }
+            .bg-C { background: linear-gradient(135deg, #f12711, #f5af19); }
+            .bg-D { background: linear-gradient(135deg, #11998e, #38ef7d); }
+
+            .yt-info { flex: 1; overflow: hidden; display:flex; justify-content: space-between; align-items: center; }
+            .yt-name { font-size: 0.9rem; font-weight: 500; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+            
+            /* Priority Flag (The Dot) */
+            .priority-flag { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-left: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+            .flag-high { background-color: #FF3B30; } /* Red */
+            .flag-med { background-color: #FF9500; }  /* Yellow */
+            .flag-low { background-color: #34C759; }  /* Green */
+
+            /* --- MAIN CONTENT --- */
+            .main-content { margin-left: 280px; flex: 1; padding: 40px; position: relative; }
+            header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+            header h2 { margin: 0; font-size: 1.8rem; font-weight: 700; }
+            .user-profile { width: 40px; height: 40px; background: rgba(211, 47, 47, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--primary); }
+
+            .view-section { display: none; opacity: 0; }
+            .view-section.active-view { display: block; animation: simpleFade 0.6s ease-out forwards; }
+            @keyframes simpleFade { from { opacity: 0; } to { opacity: 1; } }
+
+            /* General Layouts */
+            .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 24px; }
+            .stat-card { display: flex; justify-content: space-between; align-items: center; transition: transform 0.2s; }
+            .stat-card:hover { transform: translateY(-5px); }
+            .stat-head { color: var(--text-muted); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; }
+            .stat-value { font-size: 2rem; font-weight: 700; margin: 5px 0 0 0; }
+            .stat-trend { font-size: 0.8rem; margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+            .trend-up { color: #34C759; } .trend-down { color: #FF3B30; }
+            .stat-chart { width: 75px; height: 75px; position: relative; }
+            
+            .dash-mid-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px; }
+            .chart-slide-container { position: relative; height: 250px; width: 100%; }
+            .chart-view { display: none; height: 100%; width: 100%; }
+            .chart-view.active { display: block; animation: simpleFade 0.5s ease; }
+            
+            .slide-toggle { background: rgba(118, 118, 128, 0.12); padding: 3px; border-radius: 10px; display: flex; width: fit-content; }
+            .toggle-btn { border: none; background: transparent; padding: 6px 14px; font-size: 0.8rem; font-weight: 600; color: var(--text-main); border-radius: 8px; cursor: pointer; }
+            .toggle-btn.active { background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.12); }
+
+            /* Feed */
+            .feed-container { width: 100%; }
+            .feed-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 150px; padding: 15px; border-bottom: 1px solid rgba(0,0,0,0.05); align-items: center; }
+            .feed-header-row { font-weight: 600; color: var(--text-muted); font-size: 0.85rem; border-bottom: 1px solid rgba(0,0,0,0.1); }
+            .ai-response { background: rgba(52, 199, 89, 0.1); border: 1px solid rgba(52, 199, 89, 0.2); padding: 15px; border-radius: 12px; margin: 10px 15px; display: none; color: #14532d; font-size: 0.9rem; grid-column: 1 / -1; }
+
+            /* Complaints Inbox Specifics */
+            .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+            .search-bar { background: rgba(255,255,255,0.6); padding: 10px 15px; border-radius: 12px; display: flex; gap: 10px; align-items: center; width: 300px; }
+            .search-bar input { border: none; background: transparent; width: 100%; outline: none; }
+            
+            .inbox-row { display: grid; grid-template-columns: 50px 2fr 1fr 1fr 1fr 1fr 50px; padding: 18px; border-bottom: 1px solid rgba(0,0,0,0.05); align-items: center; cursor: pointer; transition: 0.2s; }
+            .inbox-row:hover { background: rgba(255,255,255,0.5); }
+            .action-panel { display: none; padding: 20px; background: rgba(255,255,255,0.3); border-bottom: 1px solid rgba(0,0,0,0.05); }
+
+            /* Config */
+            .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+            .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+            .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+            .switch input { opacity: 0; width: 0; height: 0; }
+            .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(120, 120, 128, 0.2); transition: .4s; border-radius: 34px; }
+            .slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+            input:checked + .slider { background-color: #34C759; }
+            input:checked + .slider:before { transform: translateX(22px); }
+            textarea { width: 100%; border: none; border-radius: 16px; padding: 16px; font-family: inherit; resize: vertical; background: rgba(118, 118, 128, 0.05); font-size: 0.95rem; }
+
+            @media (max-width: 1200px) { 
+                .stats-grid, .dash-mid-grid, .config-grid { grid-template-columns: 1fr; }
+                .inbox-row { grid-template-columns: 1fr; display: flex; flex-wrap: wrap; gap: 10px; } 
+            }
+        </style>
+    </head>
+    <body>
+
+        <aside class="sidebar">
+            <div class="brand">
+                <div style="width:36px; height:36px; background:var(--primary); border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; box-shadow: 0 4px 10px rgba(211, 47, 47, 0.4);">IP</div>
+                <h1>India Post AI</h1>
+            </div>
+            
+            <ul class="menu">
+                <li><a onclick="switchView('dashboard')" id="link-dashboard" class="active"><i class="fas fa-th-large"></i> <span>Dashboard</span></a></li>
+                <li><a onclick="switchView('analytics')" id="link-analytics"><i class="fas fa-chart-pie"></i> <span>Analytics</span></a></li>
+                <li><a onclick="switchView('config')" id="link-config"><i class="fas fa-robot"></i> <span>AI Config</span></a></li>
+                <li><a onclick="switchView('complaints')" id="link-complaints"><i class="fas fa-inbox"></i> <span>Complaints</span></a></li>
+            </ul>
+
+            <div class="sidebar-section-title">
+                <span>Active Tickets</span>
+                <i class="fas fa-chevron-right" style="font-size:0.8rem; color:var(--text-muted);"></i>
+            </div>
+
+            <div class="yt-sidebar-list" id="sidebar-ticket-list">
+                </div>
+
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div>
+                    <h2 id="page-title">Dashboard</h2>
+                    <span style="color: var(--text-muted);">Unified Command Center</span>
+                </div>
+                <div class="user-profile">AD</div>
+            </header>
+
+            <div id="view-dashboard" class="view-section active-view">
+                <div class="stats-grid">
+                    <div class="stat-card glass-panel"><div><div class="stat-head">Total Complaints</div><h3 class="stat-value">1,240</h3><div class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> 12% vs last month</div></div><div class="stat-chart"><canvas id="kpi1"></canvas></div></div>
+                    <div class="stat-card glass-panel"><div><div class="stat-head">AI Resolved</div><h3 class="stat-value">892</h3><div class="stat-trend trend-up" style="color:var(--primary);"><i class="fas fa-bolt"></i> 72% Auto-rate</div></div><div class="stat-chart"><canvas id="kpi2"></canvas></div></div>
+                    <div class="stat-card glass-panel"><div><div class="stat-head">Pending Review</div><h3 class="stat-value">45</h3><div class="stat-trend trend-down"><i class="fas fa-arrow-down"></i> 5% improvement</div></div><div class="stat-chart"><canvas id="kpi3"></canvas></div></div>
+                    <div class="stat-card glass-panel"><div><div class="stat-head">Avg Response</div><h3 class="stat-value">2.4h</h3><div class="stat-trend"><i class="fas fa-minus"></i> Stable</div></div><div class="stat-chart"><canvas id="kpi4"></canvas></div></div>
+                </div>
+                <div class="dash-mid-grid">
+                    <div class="glass-panel">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:15px;"><h3>Live Analytics</h3><div class="slide-toggle"><button class="toggle-btn active" onclick="toggleDashChart('sentiment', this)">Sentiment</button><button class="toggle-btn" onclick="toggleDashChart('category', this)">Volume</button></div></div>
+                        <div class="chart-slide-container"><div id="d-view-sentiment" class="chart-view active"><canvas id="dashSentimentChart"></canvas></div><div id="d-view-category" class="chart-view"><canvas id="dashCategoryChart"></canvas></div></div>
+                    </div>
+                    <div class="glass-panel">
+                        <h3>Manual AI Analysis</h3><textarea id="manual-text" rows="4" placeholder="Paste complaint text..." style="margin-top:10px;"></textarea><button class="btn-primary" id="process-ai" style="margin-top:10px;">Analyze & Add</button>
+                        <div id="analysis-result" style="display:none; margin-top:10px; padding:10px; background:rgba(255,255,255,0.4); border-radius:10px;"><small>Detected:</small> <strong id="res-cat"></strong></div>
+                    </div>
+                </div>
+                <div class="glass-panel feed-container">
+                    <h3>Recent Grievances</h3><div class="feed-row feed-header-row"><div>Message</div><div>Category</div><div>Time</div><div>Sentiment</div><div>Action</div></div>
+                    <div id="dashboard-feed"><div class="feed-row feed-item"><div><div style="font-weight:600;">Package IN8821 Delayed</div><div style="font-size:0.85rem; color:var(--text-muted);">"Stuck at Mumbai..."</div></div><div><span class="badge badge-speed">Speed Post</span></div><div>10 mins ago</div><div style="color:#FF3B30; font-weight:600;">Negative (92%)</div><div><button class="btn-outline suggest-btn">AI Response</button></div><div class="ai-response"><strong>AI Draft:</strong> "Apologies for the delay."</div></div></div>
+                </div>
+            </div>
+
+            <div id="view-analytics" class="view-section">
+                <div class="glass-panel" style="margin-bottom:20px;"><h3>Volume Trends</h3><div style="height:300px;"><canvas id="trendChart"></canvas></div></div>
+                <div class="glass-panel"><h3>Channel Source</h3><div style="height:250px;"><canvas id="channelChart"></canvas></div></div>
+            </div>
+
+            <div id="view-config" class="view-section">
+                <div class="config-grid">
+                    <div class="glass-panel"><h3>Automation</h3><div class="setting-item"><div>Auto-Reply</div><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div></div>
+                    <div class="glass-panel"><h3>Persona</h3><textarea rows="4">You are a helpful India Post agent.</textarea></div>
+                </div>
+            </div>
+
+            <div id="view-complaints" class="view-section">
+                <div class="toolbar"><div class="slide-toggle"><button class="toggle-btn active" onclick="renderAllTickets()">All</button><button class="toggle-btn">Unresolved</button></div><div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search ID..."></div></div>
+                <div class="glass-panel" style="padding:0;">
+                    <div class="inbox-row" style="background:rgba(0,0,0,0.02); font-weight:600; color:var(--text-muted);">
+                        <div></div><div>Complaint Subject</div><div>Category</div><div>Status</div><div>Date</div><div>Priority</div><div></div>
+                    </div>
+                    <div id="inbox-content"></div>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            // --- DATA MOCK ---
+            const tickets = [
+                { id: 'IN8291023', title: 'Package Stuck at Hub', user: 'Rajesh Kumar', cat: 'Speed Post', status: 'Pending', time: '2 hrs ago', priority: 'High', color: 'flag-high', badge: 'badge-speed', avatar: 'bg-A', sentiment: 'Negative' },
+                { id: 'SB-9921', title: 'Interest Not Credited', user: 'Sneha Patil', cat: 'Banking', status: 'Resolved', time: '5 hrs ago', priority: 'Medium', color: 'flag-med', badge: 'badge-bank', avatar: 'bg-B', sentiment: 'Neutral' },
+                { id: 'PLI-8822', title: 'Premium Payment Issue', user: 'Amit Verma', cat: 'PLI', status: 'Open', time: '1 day ago', priority: 'High', color: 'flag-high', badge: 'badge-staff', avatar: 'bg-C', sentiment: 'Negative' },
+                { id: 'MO-7712', title: 'Money Order Delay', user: 'Vikram Singh', cat: 'Money Order', status: 'Pending', time: '3 hrs ago', priority: 'Low', color: 'flag-low', badge: 'badge-bank', avatar: 'bg-D', sentiment: 'Neutral' },
+                { id: 'COD-1234', title: 'COD Status Update', user: 'Priya Sharma', cat: 'Logistics', status: 'Open', time: '30 mins ago', priority: 'High', color: 'flag-high', badge: 'badge-speed', avatar: 'bg-A', sentiment: 'Negative' }
+            ];
+
+            // --- NAVIGATION & INIT ---
+            function switchView(viewName) {
+                $('.menu a').removeClass('active'); $('#link-' + viewName).addClass('active');
+                const titles = { 'dashboard': 'Dashboard', 'analytics': 'Analytics', 'complaints': 'Grievance Inbox', 'config': 'AI Configuration' };
+                $('#page-title').text(titles[viewName]);
+                $('.view-section').removeClass('active-view'); $('#view-' + viewName).addClass('active-view');
+                
+                // If switching to complaints via menu, show all
+                if(viewName === 'complaints') renderAllTickets();
+            }
+
+            $(document).ready(function() {
+                initSidebar();
+                renderAllTickets(); // Initial render for inbox
+                initCharts();
+            });
+
+            // --- SIDEBAR GENERATOR ---
+            function initSidebar() {
+                const container = $('#sidebar-ticket-list');
+                container.empty();
+                
+                tickets.forEach(t => {
+                    const item = `
+                        <div class="yt-row" onclick="loadTicket('${t.id}')">
+                            <div class="yt-avatar ${t.avatar}">${t.user.charAt(0)}</div>
+                            <div class="yt-info">
+                                <div class="yt-name">${t.title}</div>
+                                <div class="priority-flag ${t.color}" title="${t.priority} Priority"></div>
+                            </div>
+                        </div>
+                    `;
+                    container.append(item);
+                });
+            }
+
+            // --- INBOX LOGIC ---
+            // 1. Render All (Default View)
+            function renderAllTickets() {
+                const container = $('#inbox-content');
+                container.empty();
+                tickets.forEach(t => container.append(createTicketHTML(t)));
+            }
+
+            // 2. Load Specific Ticket (Click from Sidebar)
+            window.loadTicket = function(id) {
+                // 1. Switch View
+                switchView('complaints');
+                
+                // 2. Filter & Render Only This Ticket
+                const t = tickets.find(x => x.id === id);
+                const container = $('#inbox-content');
+                container.empty();
+                
+                if(t) {
+                    const html = createTicketHTML(t);
+                    const element = $(html);
+                    container.append(element);
+                    
+                    // 3. Auto Expand Details
+                    setTimeout(() => {
+                        element.find('.action-panel').slideDown();
+                    }, 200);
+                }
+            };
+
+            // Helper: Create HTML for a ticket row
+            function createTicketHTML(t) {
+                let statusColor = t.status === 'Resolved' ? '#34C759' : (t.status === 'Pending' ? '#FF9500' : '#FF3B30');
+                
+                return `
+                    <div class="inbox-group">
+                        <div class="inbox-row" onclick="$(this).next('.action-panel').slideToggle()">
+                            <input type="checkbox">
+                            <div>
+                                <div style="font-weight:600;">${t.title}</div>
+                                <div style="font-size:0.8rem; color:#888;">${t.user}</div>
+                            </div>
+                            <div><span class="badge ${t.badge}">${t.cat}</span></div>
+                            <div style="color:${statusColor}; font-weight:600;">${t.status}</div>
+                            <div>${t.time}</div>
+                            <div style="display:flex; align-items:center; gap:5px;">
+                                <div class="priority-flag ${t.color}"></div> ${t.priority}
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="action-panel">
+                            <div style="margin-bottom:10px; border-bottom:1px solid rgba(0,0,0,0.05); padding-bottom:10px;">
+                                <strong>Complaint ID:</strong> <span style="font-family:monospace; background:#eee; padding:2px 6px; border-radius:4px;">${t.id}</span>
+                            </div>
+                            <p><strong>AI Analysis:</strong> ${t.sentiment} sentiment detected. Priority marked as ${t.priority}.</p>
+                            <div style="display:flex; gap:10px;">
+                                <button class="btn-primary" style="width:auto; padding:8px 16px;">Approve Response</button>
+                                <button class="btn-outline">Escalate to Human</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // --- CHARTS & INTERACTIONS (Standard) ---
+            window.toggleDashChart = function(target, btn) {
+                $(btn).parent().find('.toggle-btn').removeClass('active'); $(btn).addClass('active');
+                $('#d-view-sentiment, #d-view-category').removeClass('active'); $('#d-view-' + target).addClass('active');
+            };
+
+            function initCharts() {
+                const kpiOpts = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } }, events: [] };
+                new Chart(document.getElementById('kpi1'), { type: 'doughnut', data: { datasets: [{ data: [70, 30], backgroundColor: ['#34C759', 'rgba(0,0,0,0.05)'], borderWidth: 0, cutout: '75%' }] }, options: kpiOpts });
+                new Chart(document.getElementById('kpi2'), { type: 'doughnut', data: { datasets: [{ data: [72, 28], backgroundColor: ['#D32F2F', 'rgba(0,0,0,0.05)'], borderWidth: 0, cutout: '75%' }] }, options: kpiOpts });
+                new Chart(document.getElementById('kpi3'), { type: 'doughnut', data: { datasets: [{ data: [15, 85], backgroundColor: ['#FF9500', 'rgba(0,0,0,0.05)'], borderWidth: 0, cutout: '75%' }] }, options: kpiOpts });
+                new Chart(document.getElementById('kpi4'), { type: 'doughnut', data: { datasets: [{ data: [60, 40], backgroundColor: ['#007AFF', 'rgba(0,0,0,0.05)'], borderWidth: 0, cutout: '75%' }] }, options: kpiOpts });
+
+                const dashSentChart = new Chart(document.getElementById('dashSentimentChart'), { type: 'doughnut', data: { labels: ['Neg', 'Neu', 'Pos'], datasets: [{ data: [12, 5, 3], backgroundColor: ['#FF3B30', '#FF9500', '#34C759'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '65%' } });
+                new Chart(document.getElementById('dashCategoryChart'), { type: 'bar', data: { labels: ['Speed', 'Bank', 'Staff'], datasets: [{ label: 'Vol', data: [15, 8, 4], backgroundColor: '#D32F2F', borderRadius: 5 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
+
+                const ctxTrend = document.getElementById('trendChart').getContext('2d');
+                const grad = ctxTrend.createLinearGradient(0, 0, 0, 300); grad.addColorStop(0, 'rgba(211, 47, 47, 0.2)'); grad.addColorStop(1, 'rgba(211, 47, 47, 0)');
+                new Chart(ctxTrend, { type: 'line', data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Complaints', data: [120, 190, 150, 220, 180, 90, 60], borderColor: '#D32F2F', backgroundColor: grad, fill: true, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { borderDash: [5,5], color:'rgba(0,0,0,0.05)' } }, x: { grid: { display: false } } } } });
+                new Chart(document.getElementById('channelChart'), { type: 'polarArea', data: { labels: ['Twitter', 'Email'], datasets: [{ data: [25, 40, 20, 10], backgroundColor: ['rgba(29, 161, 242, 0.6)', 'rgba(211, 47, 47, 0.6)', 'rgba(255, 193, 7, 0.6)', 'rgba(156, 39, 176, 0.6)'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { r: { ticks: { display: false }, grid: { color: 'rgba(0,0,0,0.05)' } } } } });
+
+                $(document).on('click', '.suggest-btn', function() { $(this).closest('.feed-row').find('.ai-response').slideToggle(); });
+                $('#process-ai').click(function() {
+                    let text = $('#manual-text').val(); if (!text) return;
+                    let sentiment = "Neutral", color = "#FF9500", category = "General", badgeClass = "badge-bank";
+                    if (text.toLowerCase().match(/bad|worst|delay/)) { sentiment = "Negative"; color = "#FF3B30"; }
+                    if (text.toLowerCase().match(/good|thanks/)) { sentiment = "Positive"; color = "#34C759"; }
+                    if (text.toLowerCase().match(/speed|post/)) { category = "Speed Post"; badgeClass = "badge-speed"; }
+                    $('#analysis-result').show(); $('#res-cat').text(category); 
+                    const newItem = `<div class="feed-row feed-item" style="animation:fadeIn 0.5s"><div><div style="font-weight:600;">Manual Entry</div><div style="font-size:0.8rem; color:#888;">"${text}"</div></div><div><span class="badge ${badgeClass}">${category}</span></div><div>Just now</div><div style="color:${color}; font-weight:600;">${sentiment}</div><div><button class="btn-outline suggest-btn">AI</button></div><div class="ai-response"><strong>AI:</strong> Generated.</div></div>`;
+                    $('#dashboard-feed').prepend(newItem); $('#manual-text').val('');
+                    if(sentiment === 'Negative') dashSentChart.data.datasets[0].data[0]++;
+                    dashSentChart.update();
+                });
+            }
+        </script>
+    </body>
+    </html>
+
+>>>>>>> b31c9f596bfbef5b4d7eab9c8bcc5c14cde82543
