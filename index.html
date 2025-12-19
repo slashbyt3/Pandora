@@ -1,35 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
-
-<head>
-  <meta name="description" content="Webpage description goes here" />
-  <meta charset="utf-8">
-  <title>Change_me</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="">
-  <link rel="stylesheet" href="css/style.css">
-  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-</head>
-
-<body>
-  
-<div class="container">
-  
-</div>
-
-<script>
-</script>
-
-</body>
-</html>
-=======
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>India Post | Workspace</title>
+    <title>India Post | AI Command Center</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -37,619 +13,613 @@
 
     <style>
         :root {
-            /* Notion Colors */
-            --bg-body: #FFFFFF;
-            --bg-sidebar: #F7F7F5;
-            --bg-hover: #EFEFEF;
-            --border-color: #E9E9E7;
-            --text-main: #37352F;
-            --text-muted: #787774;
-            --primary: #D32F2F; /* India Post Red */
-            --selection: #CDE5FE;
+            /* Neo-Gov Palette */
+            --primary-dark: #8B0000;  /* Deep Post Red */
+            --primary-light: #D32F2F; /* Bright Brand Red */
+            --accent-gold: #FFC107;   /* India Post Yellow */
+            --accent-blue: #1A73E8;   /* Tech Blue */
             
-            /* Notion Tag Colors */
-            --tag-red-bg: #FFDCE0; --tag-red-text: #D1576B;
-            --tag-blue-bg: #D3E5EF; --tag-blue-text: #2383E2;
-            --tag-green-bg: #DBEDDB; --tag-green-text: #4C8B58;
-            --tag-yellow-bg: #FDEDC8; --tag-yellow-text: #CB9244;
-            --tag-gray-bg: #F1F1EF; --tag-gray-text: #787774;
+            --bg-surface: #F0F2F5;
+            --bg-card: #FFFFFF;
+            --text-primary: #111827;
+            --text-secondary: #6B7280;
+            --border-subtle: #E5E7EB;
+            
+            /* Shadows */
+            --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
         }
 
         * { box-sizing: border-box; outline: none; }
 
         body {
             margin: 0;
-            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
-            background-color: var(--bg-body);
-            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
             display: flex;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* --- NOTION SIDEBAR --- */
-        .sidebar {
-            width: 240px;
-            background-color: var(--bg-sidebar);
-            border-right: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
             height: 100vh;
-            z-index: 100;
-            padding-top: 10px;
-            transition: 0.2s;
-        }
-
-        .brand {
-            padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            gap: 0; /* Gap handled by margin on image */
-            cursor: pointer;
-            margin-bottom: 4px;
-            transition: background 0.1s;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-main);
-        }
-        .brand:hover { background: var(--bg-hover); }
-        
-        /* UPDATED LOGO CSS */
-        .brand-logo {
-            height: 36px; /* Optimized height for the rectangular logo */
-            width: auto;
-            object-fit: contain;
-            margin-right: 8px;
-            display: block;
-        }
-
-        .menu { list-style: none; padding: 0; margin: 0; }
-        .menu li { margin-bottom: 1px; }
-        
-        .menu a {
-            display: flex; align-items: center; gap: 10px;
-            padding: 6px 14px;
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        .menu a:hover { background: var(--bg-hover); color: var(--text-main); }
-        .menu a.active { background: var(--bg-hover); color: var(--text-main); font-weight: 600; }
-        .menu a i { width: 18px; text-align: center; font-size: 14px; }
-
-        /* Sidebar Ticket List */
-        .sidebar-section-title {
-            padding: 24px 14px 6px 14px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            display: flex; align-items: center; justify-content: space-between;
-        }
-
-        .yt-sidebar-list { padding: 0; overflow-y: auto; }
-        .yt-row {
-            display: flex; align-items: center;
-            padding: 4px 14px;
-            cursor: pointer;
-            transition: 0.1s;
-            height: 32px;
-        }
-        .yt-row:hover { background: var(--bg-hover); }
-        
-        .yt-icon { font-size: 14px; margin-right: 10px; width: 18px; text-align: center; }
-        
-        .yt-name { 
-            font-size: 14px; color: var(--text-main); 
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;
-        }
-        
-        /* Priority Dots */
-        .priority-dot { width: 6px; height: 6px; border-radius: 50%; margin-left: 8px; }
-        .dot-red { background: #D1576B; }
-        .dot-yellow { background: #CB9244; }
-        .dot-green { background: #4C8B58; }
-
-        /* --- MAIN CONTENT --- */
-        .main-content {
-            margin-left: 240px;
-            flex: 1;
-            padding: 0 96px 96px 96px; /* Classic Notion Padding */
-            background: var(--bg-body);
-        }
-
-        /* Notion Cover & Header */
-        .notion-cover {
-            height: 180px;
-            width: calc(100% + 192px);
-            margin-left: -96px;
-            background: #FDECC8; /* Soft Beige Cover */
-            margin-bottom: -40px;
-            opacity: 0.6;
-        }
-        
-        header { margin-top: 60px; margin-bottom: 40px; }
-        
-        .page-icon { font-size: 78px; margin-left: -4px; margin-bottom: 10px; }
-
-        header h2 {
-            font-size: 40px;
-            font-weight: 700;
-            color: var(--text-main);
-            margin: 0;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-        }
-        
-        .header-meta {
-            display: flex; gap: 12px; margin-top: 16px; color: var(--text-muted); font-size: 14px;
-            border-bottom: 1px solid var(--border-color); padding-bottom: 24px;
-        }
-
-        /* --- BLOCKS --- */
-        .notion-block { margin-bottom: 32px; }
-        
-        h3 {
-            font-size: 18px; font-weight: 600; margin: 0 0 12px 0; color: var(--text-main);
-            display: flex; align-items: center; gap: 8px;
-        }
-
-        /* KPI Gallery View */
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px;
-        }
-        
-        .stat-card {
-            border: 1px solid var(--border-color);
-            border-radius: 3px;
-            padding: 16px;
-            height: 140px;
-            cursor: pointer;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-            transition: background 0.1s;
-            position: relative;
-            background: #fff;
-        }
-        .stat-card:hover { background: var(--bg-sidebar); }
-
-        .stat-head { font-size: 14px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
-        .stat-value { font-size: 32px; font-weight: 600; margin: 12px 0 0 0; color: var(--text-main); }
-        .stat-trend { 
-            position: absolute; bottom: 16px; left: 16px;
-            font-size: 12px; display:flex; align-items:center; gap:4px; 
-        }
-        .trend-up { color: #4C8B58; background: #DBEDDB; padding: 2px 6px; border-radius: 3px; }
-        .trend-down { color: #D1576B; background: #FFDCE0; padding: 2px 6px; border-radius: 3px; }
-        
-        /* 2-Column Layout */
-        .col-2-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; margin-bottom: 32px; }
-        
-        /* Callout Block (Manual AI) */
-        .notion-callout {
-            padding: 16px;
-            border-radius: 4px;
-            background: var(--bg-sidebar);
-            border: 1px solid transparent;
-            display: flex; flex-direction: column; gap: 10px;
-        }
-        .notion-callout:hover { border-color: var(--border-color); }
-
-        /* Database View (Table) */
-        .notion-db {
-            border: 1px solid var(--border-color);
-            border-radius: 3px;
             overflow: hidden;
         }
-        
-        .db-header {
-            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 100px;
-            background: var(--bg-sidebar);
-            padding: 10px 16px;
-            font-size: 12px; color: var(--text-muted); font-weight: 600;
-            border-bottom: 1px solid var(--border-color);
+
+        /* --- 1. SIDEBAR --- */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, var(--primary-dark) 0%, #5a0000 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            z-index: 100;
         }
-        
-        .db-row {
-            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 100px;
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--border-color);
+
+        .brand-box {
+            display: flex;
             align-items: center;
-            font-size: 14px;
+            gap: 12px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .brand-logo-sidebar {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 8px;
+            padding: 2px;
+            object-fit: contain;
+        }
+
+        .brand-text h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+        .brand-text span {
+            font-size: 11px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu { list-style: none; padding: 0; margin: 0; flex: 1; }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            color: rgba(255,255,255,0.7);
+            border-radius: 10px;
             cursor: pointer;
-            transition: background 0.1s;
+            transition: all 0.2s ease;
+            margin-bottom: 8px;
+            font-weight: 500;
         }
-        .db-row:hover { background: var(--bg-sidebar); }
-        .db-row:last-child { border-bottom: none; }
+        .nav-item:hover { background: rgba(255,255,255,0.1); color: white; transform: translateX(5px); }
+        .nav-item.active { background: var(--accent-gold); color: var(--primary-dark); font-weight: 700; box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3); }
+        .nav-item i { width: 24px; margin-right: 12px; font-size: 18px; }
 
-        /* Tags */
-        .n-tag {
-            padding: 2px 6px; border-radius: 3px; font-size: 12px; line-height: 18px;
-            display: inline-block; white-space: nowrap;
+        .live-feed-widget {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: auto;
+            max-height: 300px;
+            overflow-y: auto;
         }
-        .tag-red { background: var(--tag-red-bg); color: var(--tag-red-text); }
-        .tag-yellow { background: var(--tag-yellow-bg); color: var(--tag-yellow-text); }
-        .tag-green { background: var(--tag-green-bg); color: var(--tag-green-text); }
-        .tag-blue { background: var(--tag-blue-bg); color: var(--tag-blue-text); }
-        .tag-gray { background: var(--tag-gray-bg); color: var(--tag-gray-text); }
+        /* Scrollbar for Widget */
+        .live-feed-widget::-webkit-scrollbar { width: 4px; }
+        .live-feed-widget::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
 
-        /* Toggles */
-        .slide-toggle { display: inline-flex; background: var(--bg-sidebar); padding: 2px; border-radius: 3px; margin-left: auto; }
-        .toggle-btn { 
-            border: none; background: transparent; padding: 4px 12px; font-size: 12px; 
-            color: var(--text-muted); cursor: pointer; border-radius: 3px; font-weight: 500;
+        .widget-title { font-size: 11px; text-transform: uppercase; opacity: 0.6; margin-bottom: 10px; font-weight: 700; }
+        
+        .ticket-mini {
+            display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 12px; cursor: pointer; transition: 0.2s;
         }
-        .toggle-btn.active { background: white; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        .ticket-mini:hover { padding-left: 5px; color: var(--accent-gold); }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 8px currentColor; flex-shrink: 0;}
 
-        /* Inputs */
-        .notion-input {
-            width: 100%; border: 1px solid var(--border-color); background: white;
-            padding: 8px 12px; border-radius: 3px;
-            font-family: inherit; font-size: 14px; color: var(--text-main); resize: none;
+        /* --- 2. MAIN CANVAS --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
         }
-        .notion-input:focus { border-color: #2383E2; box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.2); }
 
-        /* Buttons */
-        .n-btn-primary {
-            background: #2383E2; color: white; border: none; padding: 6px 12px;
-            border-radius: 3px; font-size: 13px; font-weight: 500; cursor: pointer;
+        /* Top Bar */
+        .top-bar {
+            height: 70px;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
         }
-        .n-btn-ghost {
-            background: transparent; color: var(--text-muted); border: none; padding: 6px 12px;
-            font-size: 13px; cursor: pointer; border-radius: 3px;
+
+        .page-title { font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 700; color: var(--text-primary); }
+        
+        .top-actions { display: flex; gap: 20px; align-items: center; }
+        .search-wrapper { position: relative; }
+        .search-wrapper input {
+            background: var(--bg-surface);
+            border: none;
+            padding: 10px 16px 10px 40px;
+            border-radius: 30px;
+            width: 250px;
+            transition: width 0.3s;
         }
-        .n-btn-ghost:hover { background: var(--bg-sidebar); color: var(--text-main); }
+        .search-wrapper input:focus { width: 320px; outline: 2px solid var(--primary-light); background: white; }
+        .search-icon { position: absolute; left: 14px; top: 10px; color: var(--text-secondary); }
 
-        /* Chart Canvas */
-        .chart-container { position: relative; width: 100%; height: 220px; }
-        .chart-view { display: none; height: 100%; width: 100%; }
-        .chart-view.active { display: block; }
+        .admin-pill {
+            display: flex; align-items: center; gap: 10px;
+            padding: 6px 12px; background: var(--bg-surface); border-radius: 30px;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+        }
+        .admin-avatar { width: 32px; height: 32px; background: var(--primary-dark); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-        /* Action Panel */
-        .action-panel { display: none; padding: 12px 16px; background: #FAFAFA; border-top: 1px solid var(--border-color); font-size: 14px; }
+        /* TOP RIGHT LOGO */
+        .top-right-logo {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            margin-left: 15px;
+            border-left: 1px solid var(--border-subtle);
+            padding-left: 15px;
+        }
+
+        /* Workspace */
+        .workspace { flex: 1; padding: 30px; overflow-y: auto; }
+
+        /* --- 3. BENTO GRID --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto auto;
+            gap: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow-card);
+            padding: 24px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid white;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--border-subtle); }
+
+        /* KPI Cards */
+        .kpi-card { grid-column: span 1; display: flex; flex-direction: column; justify-content: space-between; height: 160px; }
+        .kpi-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+        .kpi-value { font-family: 'Outfit', sans-serif; font-size: 36px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+        .kpi-label { color: var(--text-secondary); font-size: 13px; font-weight: 500; }
+        .kpi-trend { font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; margin-top: auto; }
+
+        .kpi-red .kpi-icon { background: #FFEBEE; color: var(--primary-light); }
+        .kpi-blue .kpi-icon { background: #E3F2FD; color: var(--accent-blue); }
+        .kpi-gold .kpi-icon { background: #FFF8E1; color: #F57F17; }
+        .kpi-green .kpi-icon { background: #E8F5E9; color: #2E7D32; }
+
+        /* Sections */
+        .analytics-section { grid-column: span 3; grid-row: span 2; min-height: 400px; }
+        .ai-input-section { grid-column: span 1; grid-row: span 2; display: flex; flex-direction: column; }
+        .full-width-section { grid-column: span 4; }
+
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .card-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        
+        /* Table */
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { text-align: left; padding: 16px; color: var(--text-secondary); font-size: 12px; font-weight: 600; text-transform: uppercase; border-bottom: 2px solid var(--bg-surface); }
+        .data-table td { padding: 16px; border-bottom: 1px solid var(--bg-surface); font-size: 14px; vertical-align: middle; }
+        .data-table tr:hover td { background: #FAFAFA; }
+        
+        /* Pills */
+        .pill { padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .pill-high { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+        .pill-med { background: #FFFBEB; color: #D97706; border: 1px solid #FDE68A; }
+        .pill-low { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+
+        /* AI Input */
+        .ai-wrapper { background: var(--bg-surface); border-radius: 12px; padding: 4px; border: 1px solid var(--border-subtle); flex-grow: 1; display: flex; flex-direction: column; }
+        .ai-textarea { width: 100%; height: 100%; border: none; background: transparent; padding: 16px; resize: none; font-family: inherit; font-size: 14px; }
+        .ai-actions { padding: 10px; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Mic Button */
+        .mic-btn { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border-subtle); background: white; color: var(--text-secondary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+        .mic-btn:hover { background: #f0f0f0; color: var(--primary-light); }
+        .mic-active { background: #ffebee !important; color: #d32f2f !important; border-color: #d32f2f !important; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(211, 47, 47, 0); } 100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); } }
+
+        .btn-modern { background: var(--primary-light); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2); transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .btn-modern:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-modern:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .ai-result-box { margin-top: 20px; background: white; border-left: 4px solid var(--accent-gold); padding: 16px; border-radius: 0 8px 8px 0; box-shadow: var(--shadow-card); display: none; }
 
         /* Views */
-        .view-section { display: none; }
-        .view-section.active-view { display: block; }
+        .app-view { display: none; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .app-view.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Mobile */
-        @media (max-width: 1200px) { 
-            .stats-grid, .col-2-grid { grid-template-columns: 1fr; }
-            .main-content { padding: 40px; margin-left: 0; }
-            .sidebar { transform: translateX(-100%); }
-            .db-row, .db-header { grid-template-columns: 1fr; gap: 8px; }
-        }
+        .loader-bar { height: 3px; width: 100%; background: #eee; position: absolute; top: 0; left: 0; display: none; }
+        .loader-fill { height: 100%; background: var(--accent-gold); width: 0%; animation: load 1s infinite; }
+        @keyframes load { 0% {width: 0%; margin-left: 0;} 50% {width: 50%; margin-left: 25%;} 100% {width: 100%; margin-left: 100%;} }
+
+        @media (max-width: 1200px) { .bento-grid { grid-template-columns: 1fr; } .kpi-card, .analytics-section, .ai-input-section, .full-width-section { grid-column: span 1; } }
     </style>
 </head>
 <body>
 
     <aside class="sidebar">
-        <div class="brand">
+        <div class="brand-box">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/India_Post_Logo.svg/1200px-India_Post_Logo.svg.png" 
-                 alt="India Post Logo" 
-                 class="brand-logo"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <span>India Post Workspace</span>
+                 alt="India Post" class="brand-logo-sidebar" onerror="this.style.display='none'">
+            <div class="brand-text">
+                <h1>India Post</h1>
+                <span>AI Command Center</span>
+            </div>
         </div>
-        
-        <ul class="menu">
-            <li><a onclick="switchView('dashboard')" id="link-dashboard" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
-            <li><a onclick="switchView('analytics')" id="link-analytics"><i class="fas fa-chart-line"></i> Analytics</a></li>
-            <li><a onclick="switchView('config')" id="link-config"><i class="fas fa-robot"></i> Configuration</a></li>
-            <li><a onclick="switchView('complaints')" id="link-complaints"><i class="fas fa-inbox"></i> Complaints Database</a></li>
+
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="switchView('dashboard')">
+                <i class="fas fa-th-large"></i> Dashboard
+            </li>
+            <li class="nav-item" onclick="switchView('analytics')">
+                <i class="fas fa-chart-pie"></i> Analytics
+            </li>
+            <li class="nav-item" onclick="switchView('complaints')">
+                <i class="fas fa-inbox"></i> Live Inbox
+            </li>
+            <li class="nav-item" onclick="switchView('config')">
+                <i class="fas fa-sliders-h"></i> System AI
+            </li>
         </ul>
 
-        <div class="sidebar-section-title">
-            <span>ACTIVE TICKETS</span>
-            <i class="fas fa-plus" style="cursor:pointer; opacity:0.6;"></i>
+        <div class="live-feed-widget">
+            <div class="widget-title">ACTIVE TICKETS (LIVE)</div>
+            <div id="sidebar-list">
+                </div>
         </div>
-
-        <div class="yt-sidebar-list" id="sidebar-ticket-list">
-            </div>
     </aside>
 
-    <main class="main-content">
-        
-        <div class="notion-cover"></div>
+    <div class="main-content">
+        <div class="loader-bar"><div class="loader-fill"></div></div>
 
-        <header>
-            <div class="page-icon">📬</div>
-            <h2 id="page-title">Complaint Management System</h2>
-            <div class="header-meta">
-                <span><i class="far fa-user-circle"></i> Admin</span>
-                <span><i class="far fa-clock"></i> Updated just now</span>
-                <span><i class="far fa-comment-alt"></i> 12 Comments</span>
-            </div>
-        </header>
-
-        <div id="view-dashboard" class="view-section active-view">
-            <div class="notion-block">
-                <h3>Overview</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-head"><i class="far fa-envelope"></i> Total Complaints</div>
-                        <div class="stat-value">1,240</div>
-                        <div class="stat-trend trend-up">12% vs last month</div>
-                        <div style="height:40px; width:40px; position:absolute; bottom:16px; right:16px;"><canvas id="kpi1"></canvas></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-head"><i class="far fa-check-circle"></i> AI Resolved</div>
-                        <div class="stat-value">892</div>
-                        <div class="stat-trend trend-up" style="color:#2383E2; background:#D3E5EF;">72% Auto-rate</div>
-                        <div style="height:40px; width:40px; position:absolute; bottom:16px; right:16px;"><canvas id="kpi2"></canvas></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-head"><i class="far fa-clock"></i> Pending</div>
-                        <div class="stat-value">45</div>
-                        <div class="stat-trend trend-down">5% improvement</div>
-                        <div style="height:40px; width:40px; position:absolute; bottom:16px; right:16px;"><canvas id="kpi3"></canvas></div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-head"><i class="fas fa-bolt"></i> Avg Response</div>
-                        <div class="stat-value">2.4h</div>
-                        <div class="stat-trend" style="color:#787774; background:#F1F1EF;">Stable</div>
-                        <div style="height:40px; width:40px; position:absolute; bottom:16px; right:16px;"><canvas id="kpi4"></canvas></div>
-                    </div>
+        <div class="top-bar">
+            <div class="page-title" id="page-heading">Dashboard Overview</div>
+            <div class="top-actions">
+                <div class="search-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" placeholder="Search tracking ID or keyword...">
                 </div>
-            </div>
-
-            <div class="col-2-grid">
-                <div>
-                    <h3>
-                        Live Analytics
-                        <div class="slide-toggle">
-                            <button class="toggle-btn active" onclick="toggleDashChart('sentiment', this)">Sentiment</button>
-                            <button class="toggle-btn" onclick="toggleDashChart('category', this)">Volume</button>
-                        </div>
-                    </h3>
-                    <div style="border: 1px solid var(--border-color); border-radius: 3px; padding: 16px;">
-                        <div class="chart-container">
-                            <div id="d-view-sentiment" class="chart-view active"><canvas id="dashSentimentChart"></canvas></div>
-                            <div id="d-view-category" class="chart-view"><canvas id="dashCategoryChart"></canvas></div>
-                        </div>
-                    </div>
+                <div class="admin-pill">
+                    <div class="admin-avatar">AD</div>
+                    <span>Super Admin</span>
+                    <i class="fas fa-chevron-down" style="font-size:10px;"></i>
                 </div>
-
-                <div>
-                    <h3>Manual AI Analysis</h3>
-                    <div class="notion-callout">
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <i class="fas fa-robot" style="color:var(--text-muted);"></i>
-                            <span style="font-size:14px; font-weight:500;">Paste unstructured text</span>
-                        </div>
-                        <textarea id="manual-text" rows="4" class="notion-input" placeholder="e.g. 'Speed Post delayed for 3 days...'"></textarea>
-                        <div style="display:flex; justify-content:space-between; align-items:center;">
-                            <span id="analysis-result" style="display:none; font-size:12px;">
-                                <span class="n-tag tag-blue" id="res-cat"></span> 
-                                <span class="n-tag tag-gray" id="res-sent"></span>
-                            </span>
-                            <button class="n-btn-primary" id="process-ai">Analyze</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="notion-block">
-                <h3>Recent Grievances</h3>
-                <div class="notion-db">
-                    <div class="db-header">
-                        <div>Message</div>
-                        <div>Category</div>
-                        <div>Sentiment</div>
-                        <div>Time</div>
-                        <div>Action</div>
-                    </div>
-                    <div id="dashboard-feed">
-                        <div class="db-row feed-item">
-                            <div style="font-weight:500;">Package IN8821 Delayed</div>
-                            <div><span class="n-tag tag-blue">Speed Post</span></div>
-                            <div><span class="n-tag tag-red">Negative</span></div>
-                            <div style="color:var(--text-muted); font-size:12px;">10m ago</div>
-                            <div><button class="n-btn-ghost suggest-btn">AI Draft</button></div>
-                        </div>
-                        <div class="action-panel ai-response">
-                            <strong>AI Suggestion:</strong> "Dear Customer, we apologize for the delay at Mumbai Hub. We have escalated this to the sorting center manager."
-                        </div>
-                    </div>
-                </div>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/India_Post_Logo.svg/1200px-India_Post_Logo.svg.png" 
+                     alt="India Post" class="top-right-logo" style="height: 40px; border-left: 1px solid #e5e7eb; padding-left: 15px;">
             </div>
         </div>
 
-        <div id="view-analytics" class="view-section">
-            <div class="col-2-grid">
-                <div>
-                    <h3>Volume Trends</h3>
-                    <div style="border:1px solid var(--border-color); padding:16px; border-radius:3px;">
-                        <div class="chart-container" style="height:300px;"><canvas id="trendChart"></canvas></div>
+        <div class="workspace">
+            
+            <div id="view-dashboard" class="app-view active">
+                <div class="bento-grid">
+                    
+                    <div class="card kpi-card kpi-red">
+                        <div class="kpi-icon"><i class="fas fa-envelope-open-text"></i></div>
+                        <div><div class="kpi-value" id="kpi-total">...</div><div class="kpi-label">Total Complaints</div></div>
+                        <div class="kpi-trend" style="color: #D32F2F;"><i class="fas fa-arrow-up"></i> Live Stream</div>
                     </div>
-                </div>
-                <div>
-                    <h3>Channel Source</h3>
-                    <div style="border:1px solid var(--border-color); padding:16px; border-radius:3px;">
-                        <div class="chart-container" style="height:300px;"><canvas id="channelChart"></canvas></div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div id="view-config" class="view-section">
-            <div class="col-2-grid">
-                <div>
-                    <h3>Automation Rules</h3>
-                    <div class="notion-db">
-                        <div style="padding:12px 16px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between;">
-                            <div>Auto-Reply Enabled</div>
-                            <input type="checkbox" checked>
+                    <div class="card kpi-card kpi-blue">
+                        <div class="kpi-icon"><i class="fas fa-robot"></i></div>
+                        <div><div class="kpi-value" id="kpi-resolved">...</div><div class="kpi-label">AI Auto-Resolved</div></div>
+                        <div class="kpi-trend" style="color: #1A73E8;"><i class="fas fa-bolt"></i> 72% Rate</div>
+                    </div>
+
+                    <div class="card kpi-card kpi-gold">
+                        <div class="kpi-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div><div class="kpi-value" id="kpi-pending">...</div><div class="kpi-label">Pending Action</div></div>
+                        <div class="kpi-trend" style="color: #F57F17;">Requires Attention</div>
+                    </div>
+
+                    <div class="card kpi-card kpi-green">
+                        <div class="kpi-icon"><i class="fas fa-stopwatch"></i></div>
+                        <div><div class="kpi-value">2.4h</div><div class="kpi-label">Avg Response</div></div>
+                        <div class="kpi-trend" style="color: #2E7D32;">Within SLA</div>
+                    </div>
+
+                    <div class="card analytics-section">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fas fa-chart-area" style="color:var(--primary-light)"></i> Complaint Volume & Sentiment</div>
+                            <select style="border:none; background:transparent; font-weight:600; cursor:pointer;"><option>Real-Time</option></select>
                         </div>
-                        <div style="padding:12px 16px; display:flex; justify-content:space-between;">
-                            <div>Confidence Threshold</div>
-                            <strong>85%</strong>
+                        <div style="height: 320px; width: 100%;">
+                            <canvas id="mainChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card ai-input-section">
+                        <div class="card-header">
+                            <div class="card-title"><i class="fas fa-magic" style="color:var(--accent-gold)"></i> AI Analyzer</div>
+                        </div>
+                        <div class="ai-wrapper">
+                            <textarea id="manual-text" class="ai-textarea" placeholder="Type or click the mic to speak..."></textarea>
+                            <div class="ai-actions">
+                                <button class="mic-btn" id="mic-trigger" title="Speak Complaint"><i class="fas fa-microphone"></i></button>
+                                <button class="btn-modern" id="process-ai" onclick="analyzeAndAdd()">
+                                    <i class="fas fa-sparkles"></i> Process
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="ai-output" class="ai-result-box">
+                            <div style="font-size:12px; font-weight:600; color:#888; margin-bottom:5px;">AI DIAGNOSIS</div>
+                            <div style="font-size:15px; font-weight:700; color:#111;" id="ai-cat">Category</div>
+                            <div style="display:flex; gap:10px; margin-top:8px;">
+                                <span class="pill pill-med" id="ai-sent">Sentiment</span>
+                                <span class="pill pill-high" id="ai-prio">Priority</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card full-width-section">
+                        <div class="card-header">
+                            <div class="card-title">Recent Grievances</div>
+                            <button class="btn-modern" style="background:var(--bg-surface); color:#333; box-shadow:none;">View All</button>
+                        </div>
+                        <table class="data-table">
+                            <thead><tr><th>ID</th><th>Subject / Message</th><th>Category</th><th>Sentiment</th><th>Priority</th><th>Status</th></tr></thead>
+                            <tbody id="dashboard-table-body"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="view-analytics" class="app-view">
+                <div class="bento-grid">
+                    <div class="card analytics-section">
+                        <h3><i class="fas fa-globe"></i> Regional Heatmap</h3>
+                        <div style="height:300px; display:flex; align-items:center; justify-content:center; color:#888;">
+                            <i class="fas fa-map-marked-alt" style="font-size:48px; margin-right:10px;"></i>
+                            Detailed Geo-Analytics Loading...
                         </div>
                     </div>
                 </div>
-                <div>
-                    <h3>Persona</h3>
-                    <textarea class="notion-input" rows="6">You are a helpful support agent for India Post. Always apologize for delays. Use "Dear Customer".</textarea>
-                </div>
-            </div>
-        </div>
-
-        <div id="view-complaints" class="view-section">
-            <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
-                <div class="slide-toggle">
-                    <button class="toggle-btn active" onclick="renderAllTickets()">All View</button>
-                    <button class="toggle-btn">Urgent</button>
-                </div>
-                <input type="text" class="notion-input" placeholder="Search..." style="width:200px;">
             </div>
 
-            <div class="notion-db">
-                <div class="db-header">
-                    <div>Complaint Subject</div>
-                    <div>Category</div>
-                    <div>Status</div>
-                    <div>Date</div>
-                    <div>Priority</div>
-                </div>
-                <div id="inbox-content">
+            <div id="view-complaints" class="app-view">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Full Database</h3>
+                        <input type="text" placeholder="Filter..." style="padding:8px; border:1px solid #ddd; border-radius:6px;">
                     </div>
+                    <table class="data-table">
+                        <thead><tr><th>ID</th><th>Customer</th><th>Complaint</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="full-table-body"></tbody>
+                    </table>
+                </div>
             </div>
-        </div>
 
-    </main>
+        </div>
+    </div>
 
     <script>
-        // --- DATA ---
-        const tickets = [
-            { id: 'IN8291023', title: 'Package Stuck at Hub', user: 'Rajesh Kumar', cat: 'Speed Post', status: 'Pending', time: '2 hrs ago', priority: 'High', color: 'dot-red', badge: 'tag-blue', avatar: 'bg-A', sentiment: 'Negative', tagClass: 'tag-yellow' },
-            { id: 'SB-9921', title: 'Interest Not Credited', user: 'Sneha Patil', cat: 'Banking', status: 'Resolved', time: '5 hrs ago', priority: 'Medium', color: 'dot-yellow', badge: 'tag-gray', avatar: 'bg-B', sentiment: 'Neutral', tagClass: 'tag-green' },
-            { id: 'PLI-8822', title: 'Premium Payment Issue', user: 'Amit Verma', cat: 'PLI', status: 'Open', time: '1 day ago', priority: 'High', color: 'dot-red', badge: 'tag-red', avatar: 'bg-C', sentiment: 'Negative', tagClass: 'tag-red' },
-            { id: 'MO-7712', title: 'Money Order Delay', user: 'Vikram Singh', cat: 'Money Order', status: 'Pending', time: '3 hrs ago', priority: 'Low', color: 'dot-green', badge: 'tag-blue', avatar: 'bg-D', sentiment: 'Neutral', tagClass: 'tag-yellow' },
-            { id: 'COD-1234', title: 'COD Status Update', user: 'Priya Sharma', cat: 'Logistics', status: 'Open', time: '30 mins ago', priority: 'High', color: 'dot-red', badge: 'tag-blue', avatar: 'bg-A', sentiment: 'Negative', tagClass: 'tag-red' }
-        ];
+        // --- CONFIGURATION ---
+        const API_URL = "http://127.0.0.1:5000/api";
+        let mainChartInstance = null;
 
-        // --- INIT ---
-        function switchView(viewName) {
-            $('.menu a').removeClass('active'); $('#link-' + viewName).addClass('active');
-            const titles = { 'dashboard': 'Complaint Management System', 'analytics': 'Analytics & Reports', 'complaints': 'All Complaints Database', 'config': 'AI Settings' };
-            $('#page-title').text(titles[viewName]);
-            $('.view-section').removeClass('active-view'); $('#view-' + viewName).addClass('active-view');
-            if(viewName === 'complaints') renderAllTickets();
+        // --- NAVIGATION ---
+        function switchView(viewId) {
+            $('.nav-item').removeClass('active');
+            $(`[onclick="switchView('${viewId}')"]`).addClass('active');
+            
+            $('.app-view').removeClass('active');
+            setTimeout(() => { $(`#view-${viewId}`).addClass('active'); }, 50);
+            
+            const titles = { 'dashboard': 'Dashboard Overview', 'analytics': 'Deep Dive Analytics', 'complaints': 'Ticket Database', 'config': 'System Configuration' };
+            $('#page-heading').text(titles[viewId]);
+            
+            if(viewId === 'complaints') fetchAllData();
         }
 
+        // --- INIT ---
         $(document).ready(function() {
-            initSidebar();
-            renderAllTickets(); 
             initCharts();
+            initVoice(); // Initialize Voice Logic
+            fetchAllData();
+            setInterval(fetchAllData, 5000); 
         });
 
-        // --- SIDEBAR GENERATOR ---
-        function initSidebar() {
-            const container = $('#sidebar-ticket-list');
-            container.empty();
+        // --- VOICE RECOGNITION LOGIC ---
+        function initVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const micBtn = document.getElementById('mic-trigger');
+            const textArea = document.getElementById('manual-text');
+
+            if (SpeechRecognition) {
+                const recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.lang = 'en-IN';
+                recognition.interimResults = false;
+
+                micBtn.addEventListener('click', () => {
+                    if (micBtn.classList.contains('mic-active')) {
+                        recognition.stop();
+                    } else {
+                        recognition.start();
+                    }
+                });
+
+                recognition.onstart = () => {
+                    micBtn.classList.add('mic-active');
+                    textArea.placeholder = "Listening... Speak now...";
+                };
+
+                recognition.onend = () => {
+                    micBtn.classList.remove('mic-active');
+                    textArea.placeholder = "Type or click the mic to speak...";
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    const currentText = textArea.value;
+                    textArea.value = currentText ? currentText + " " + transcript : transcript;
+                };
+            } else {
+                micBtn.style.display = 'none'; // Hide if browser doesn't support
+            }
+        }
+
+        // --- API & DATA LOGIC ---
+        async function fetchAllData() {
+            try {
+                // 1. Fetch Tickets
+                const res = await fetch(`${API_URL}/tickets`);
+                const tickets = await res.json();
+                renderDashboard(tickets);
+                renderSidebar(tickets);
+
+                // 2. Fetch Stats
+                const statsRes = await fetch(`${API_URL}/stats`);
+                const stats = await statsRes.json();
+                updateKPIs(stats);
+                updateCharts(stats);
+                
+            } catch (e) {
+                console.log("Backend offline or loading...", e);
+            }
+        }
+
+        async function analyzeAndAdd() {
+            const text = $('#manual-text').val();
+            if(!text) return;
+
+            $('.loader-bar').show();
+            $('#process-ai').prop('disabled', true).html('<i class="fas fa-circle-notch fa-spin"></i> Processing');
             
-            tickets.forEach(t => {
-                const item = `
-                    <div class="yt-row" onclick="loadTicket('${t.id}')">
-                        <div class="yt-icon"><i class="fas fa-file-alt" style="color:#787774;"></i></div>
-                        <div class="yt-name">${t.title}</div>
-                        <div class="priority-dot ${t.color}"></div>
-                    </div>
+            try {
+                const res = await fetch(`${API_URL}/analyze`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({text: text})
+                });
+                const data = await res.json();
+                
+                // Show Result Card
+                $('#ai-output').fadeIn();
+                $('#ai-cat').text(data.Category);
+                $('#ai-sent').text(data.Sentiment);
+                $('#ai-prio').text(data.Priority);
+                
+                $('#manual-text').val('');
+                fetchAllData(); // Refresh UI
+            } catch(e) {
+                alert("Error connecting to AI Brain.");
+            }
+            $('.loader-bar').hide();
+            $('#process-ai').prop('disabled', false).html('<i class="fas fa-sparkles"></i> Process');
+        }
+
+        // --- RENDERERS ---
+        function updateKPIs(data) {
+            $('#kpi-total').text(data.kpi.total);
+            $('#kpi-resolved').text(data.kpi.resolved);
+            $('#kpi-pending').text(data.kpi.pending);
+        }
+
+        function renderDashboard(tickets) {
+            const tbody = $('#dashboard-table-body');
+            tbody.empty();
+            
+            // Show top 5
+            tickets.slice(0, 5).forEach(t => {
+                const pClass = t.Priority === 'High' ? 'pill-high' : 'pill-low';
+                const row = `
+                    <tr>
+                        <td style="font-family:monospace; font-weight:600; color:var(--text-secondary)">${t.ID.substring(0,8)}</td>
+                        <td style="font-weight:600">${t.Complaint.substring(0, 40)}...</td>
+                        <td><span class="pill pill-med">${t.Category}</span></td>
+                        <td>${t.Sentiment}</td>
+                        <td><span class="pill ${pClass}">${t.Priority}</span></td>
+                        <td><span class="pill pill-low">${t.Status}</span></td>
+                    </tr>
                 `;
-                container.append(item);
+                tbody.append(row);
+            });
+
+            // Full Table Render
+            const fullBody = $('#full-table-body');
+            fullBody.empty();
+            tickets.forEach(t => {
+                fullBody.append(`<tr><td>${t.ID}</td><td>${t.Customer}</td><td>${t.Complaint}</td><td>${t.Category}</td><td>${t.Status}</td><td>${t.Date}</td></tr>`);
             });
         }
 
-        // --- INBOX LOGIC ---
-        function renderAllTickets() {
-            const container = $('#inbox-content');
-            container.empty();
-            tickets.forEach(t => container.append(createTicketHTML(t)));
-        }
-
-        window.loadTicket = function(id) {
-            switchView('complaints');
-            const t = tickets.find(x => x.id === id);
-            const container = $('#inbox-content');
-            container.empty();
-            if(t) {
-                const html = createTicketHTML(t);
-                const element = $(html);
-                container.append(element);
-                setTimeout(() => { element.find('.action-panel').slideDown(100); }, 50);
-            }
-        };
-
-        function createTicketHTML(t) {
-            return `
-                <div class="inbox-group">
-                    <div class="db-row" onclick="$(this).next('.action-panel').slideToggle(100)">
-                        <div style="font-weight:500;">
-                            ${t.title}
-                        </div>
-                        <div><span class="n-tag ${t.badge}">${t.cat}</span></div>
-                        <div><span class="n-tag ${t.tagClass}">${t.status}</span></div>
-                        <div style="color:var(--text-muted);">${t.time}</div>
-                        <div style="display:flex; align-items:center; gap:6px;">
-                            <div class="priority-dot ${t.color}"></div> <span style="font-size:12px;">${t.priority}</span>
-                        </div>
+        function renderSidebar(tickets) {
+            const list = $('#sidebar-list');
+            list.empty();
+            tickets.slice(0, 10).forEach(t => {
+                const color = t.Priority === 'High' ? '#DC2626' : (t.Priority === 'Medium' ? '#D97706' : '#059669');
+                list.append(`
+                    <div class="ticket-mini" onclick="switchView('complaints')">
+                        <div class="status-dot" style="color: ${color}"></div>
+                        <div style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.Category} - ${t.Complaint.substring(0, 20)}...</div>
                     </div>
-                    <div class="action-panel">
-                        <div style="margin-bottom:12px; font-size:12px; color:var(--text-muted);">
-                            <strong>ID:</strong> ${t.id} | <strong>User:</strong> ${t.user}
-                        </div>
-                        <div style="background:#F7F7F5; padding:8px; border-radius:3px; margin-bottom:12px;">
-                            <strong>AI Analysis:</strong> ${t.sentiment} sentiment detected. Recommended priority: ${t.priority}.
-                        </div>
-                        <button class="n-btn-primary">Approve Response</button>
-                        <button class="n-btn-ghost">Escalate</button>
-                    </div>
-                </div>
-            `;
+                `);
+            });
         }
 
         // --- CHARTS ---
-        window.toggleDashChart = function(target, btn) {
-            $(btn).parent().find('.toggle-btn').removeClass('active'); $(btn).addClass('active');
-            $('#d-view-sentiment, #d-view-category').hide(); $('#d-view-' + target).show();
-        };
-
         function initCharts() {
-            Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'; 
-            Chart.defaults.color = '#787774';
-            
-            const kpiData = { datasets: [{ data: [75, 25], backgroundColor: ['#D32F2F', '#E9E9E7'], borderWidth: 0, cutout: '75%' }] };
-            new Chart(document.getElementById('kpi1'), { type: 'doughnut', data: kpiData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
-            new Chart(document.getElementById('kpi2'), { type: 'doughnut', data: kpiData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
-            new Chart(document.getElementById('kpi3'), { type: 'doughnut', data: kpiData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
-            new Chart(document.getElementById('kpi4'), { type: 'doughnut', data: kpiData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
-
-            const dashSentChart = new Chart(document.getElementById('dashSentimentChart'), { type: 'doughnut', data: { labels: ['Neg', 'Neu', 'Pos'], datasets: [{ data: [12, 5, 3], backgroundColor: ['#FFDCE0', '#F1F1EF', '#DBEDDB'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '60%' } });
-            new Chart(document.getElementById('dashCategoryChart'), { type: 'bar', data: { labels: ['Speed', 'Bank', 'Staff'], datasets: [{ label: 'Vol', data: [15, 8, 4], backgroundColor: '#2383E2', borderRadius: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
-
-            const ctxTrend = document.getElementById('trendChart').getContext('2d');
-            new Chart(ctxTrend, { type: 'line', data: { labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], datasets: [{ label: 'Complaints', data: [120, 190, 150, 220, 180, 90, 60], borderColor: '#D32F2F', backgroundColor: 'rgba(211, 47, 47, 0.05)', fill: true, tension: 0.3, pointRadius: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { borderDash: [4,4], color:'#E9E9E7' } }, x: { grid: { display: false } } } } });
-            
-            new Chart(document.getElementById('channelChart'), { type: 'polarArea', data: { labels: ['Tw', 'Em', 'Web', 'App'], datasets: [{ data: [25, 40, 20, 10], backgroundColor: ['#D3E5EF', '#FFDCE0', '#FDEDC8', '#DBEDDB'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { r: { ticks: { display: false }, grid: { color: '#E9E9E7' } } }, plugins: { legend: { position: 'bottom' } } } });
-
-            $(document).on('click', '.suggest-btn', function() { $(this).closest('.feed-item').next('.ai-response').slideToggle(100); });
-            
-            $('#process-ai').click(function() {
-                let text = $('#manual-text').val(); if (!text) return;
-                let sentiment = "Neutral", category = "General", badgeClass = "tag-gray";
-                if (text.toLowerCase().match(/bad|worst|delay/)) { sentiment = "Negative"; }
-                if (text.toLowerCase().match(/speed|post/)) { category = "Speed Post"; badgeClass = "tag-blue"; }
-                
-                $('#analysis-result').show(); 
-                $('#res-cat').text(category).attr('class', 'n-tag ' + badgeClass);
-                $('#res-sent').text(sentiment);
-
-                const newItem = `<div class="db-row feed-item"><div style="font-weight:500;">Manual Entry</div><div><span class="n-tag ${badgeClass}">${category}</span></div><div><span class="n-tag tag-gray">${sentiment}</span></div><div style="color:var(--text-muted); font-size:12px;">Just now</div><div><button class="n-btn-ghost suggest-btn">AI Draft</button></div></div><div class="action-panel ai-response" style="display:none;"><strong>AI Suggestion:</strong> Response generated.</div>`;
-                $('#dashboard-feed').prepend(newItem); $('#manual-text').val('');
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            mainChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Complaint Categories',
+                        data: [],
+                        backgroundColor: '#D32F2F',
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { borderDash: [5, 5], color: '#eee' }, beginAtZero: true },
+                        x: { grid: { display: false } }
+                    }
+                }
             });
+        }
+
+        function updateCharts(stats) {
+            const data = stats.charts.categories;
+            if(mainChartInstance && data) {
+                mainChartInstance.data.labels = Object.keys(data);
+                mainChartInstance.data.datasets[0].data = Object.values(data);
+                mainChartInstance.update();
+            }
         }
     </script>
 </body>
 </html>
->>>>>>> b31c9f596bfbef5b4d7eab9c8bcc5c14cde82543
