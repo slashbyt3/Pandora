@@ -1,0 +1,7 @@
+[theme]
+base = "light"              # Forces "Government" Light Mode
+primaryColor = "#D32F2F"    # India Post Red (Used for Charts & Checkboxes)
+backgroundColor = "#FFFFFF" # Clean White
+secondaryBackgroundColor = "#F0F2F6" # Light Grey for Sidebars
+textColor = "#333333"       # Dark Grey (Official documents color)
+font = "sans serif"

@@ -1,0 +1,101 @@
+Complaint_ID,Customer_Name,Date,Text
+C001,Rajesh Kumar,2025-10-01,My Speed Post (IN882910) was supposed to reach Mumbai yesterday but tracking still shows New Delhi. This is urgent legal paperwork!
+C002,Priya Sharma,2025-10-01,The postman in the Indiranagar branch was extremely rude. He refused to deliver the parcel to my door and asked me to come to the street.
+C003,Amit Patel,2025-10-02,I received my package today but the box was completely crushed. The electronic item inside is broken. How do I claim insurance?
+C004,Sneha Gupta,2025-10-02,What are the current interest rates for the Sukanya Samriddhi Yojana account? I want to open one for my daughter.
+C005,Mohd Faizal,2025-10-03,Tracking status says 'Delivered' but I have not received anything yet. Please check who signed for it. Tracking ID: SP123456.
+C006,John Dsouza,2025-10-03,I have been trying to call the customer care number for 3 hours but no one is picking up. Very poor service.
+C007,Lakshmi Iyer,2025-10-04,My passport dispatch is delayed. It has been stuck at the sorting center for 5 days. I have a flight next week!
+C008,Vikram Singh,2025-10-04,The tracking website is down. I get a 404 error whenever I try to enter my consignment number.
+C009,Anjali Menon,2025-10-05,The postman threw the packet over the gate and my dog tore it up. Why didn't he ring the bell?
+C010,Rahul Verma,2025-10-05,I want to change the delivery address for my parcel IN998877. It is currently in transit. Is this possible?
+C011,Kavita Reddy,2025-10-06,Excellent service by the localized post office staff. Just wanted to send a thank you note.
+C012,Suresh Raina,2025-10-06,My money order of Rs. 5000 has not reached my village yet. It has been 10 days.
+C013,Meera Joshi,2025-10-07,I sent a Rakhi to my brother in Pune but it reached after Raksha Bandhan. Very disappointed with the delay.
+C014,Arjun Das,2025-10-07,Is there a way to calculate postage for international shipping to Canada online?
+C015,Fatima Bi,2025-10-08,The staff at the counter made me wait for 45 minutes just to buy stamps. They were busy talking to each other.
+C016,Charles Lobo,2025-10-08,My parcel was opened and resealed with tape. Items are missing from inside. This is theft!
+C017,Deepa Malik,2025-10-09,Tracking ID IN112233. Status has not updated in 48 hours. Please update.
+C018,Rohan Mehra,2025-10-09,I need to send a bulk consignment of 500 letters for my business. Do you offer corporate discounts?
+C019,Simran Kaur,2025-10-10,The PIN code on my receipt is wrong. The operator typed 500081 instead of 500084. Will it still be delivered?
+C020,Naveen Kumar,2025-10-10,Please stop sending SMS updates in the middle of the night. It is very disturbing.
+C021,Aditya Rao,2025-10-11,The parcel tracking shows 'Out for Delivery' since 3 days. Where is my package?
+C022,Bhavna Sethi,2025-10-11,Staff at the counter refused to accept my registered post saying the server is down. This happens every week.
+C023,Cyril Thomas,2025-10-12,Received a damaged envelope. The important documents inside are wet and torn. Who is responsible?
+C024,Divya Nair,2025-10-12,I want to open a Public Provident Fund (PPF) account. What documents do I need to carry?
+C025,Eshan Khan,2025-10-13,My grandmother's pension money order is delayed by 2 weeks. She needs the money for medicine.
+C026,Farhan Akhtar,2025-10-13,Can I send a parcel to Australia via Speed Post? What are the restrictions?
+C027,Gita Gopinath,2025-10-14,The postman asked for a 'tip' to deliver my passport. This is bribery and unacceptable.
+C028,Harish M,2025-10-14,My package is stuck at the customs office for 10 days. Tracking ID CP998877IN.
+C029,Ishaan Khatter,2025-10-15,The tracking link you sent via SMS is broken. It leads to a blank page.
+C030,Jaya Bachchan,2025-10-15,I sent a gift to my sister but she received an empty box. Someone stole the contents in transit.
+C031,Karan Johar,2025-10-16,Why is there no card payment option at the post office? Cash only is very inconvenient.
+C032,Lata Mangeshkar,2025-10-16,The post office in my area is always closed during lunch hours from 1 PM to 3 PM. Is this official timing?
+C033,Manish Malhotra,2025-10-17,I need to track a consignment sent from Kolkata to Delhi. The receipt is lost. Can I track by name?
+C034,Neha Dhupia,2025-10-17,My parcel was delivered to the wrong address! My neighbor gave it to me later. Very careless.
+C035,Omkar Kapoor,2025-10-18,I want to invest in the Kisan Vikas Patra scheme. What is the maturity period?
+C036,Pooja Hegde,2025-10-18,The behavior of the staff at the enquiry counter was very rude. They shouted at an elderly person.
+C037,Qasim Ali,2025-10-19,My parcel has been marked as 'Undelivered - Addressee Left' but I have lived here for 10 years!
+C038,Ria Sen,2025-10-19,Is tracking available for ordinary post? I sent a letter 2 weeks ago and it hasn't reached.
+C039,Sameer Soni,2025-10-20,The packaging was torn and the contents were spilling out when I received the delivery.
+C040,Tanya Maniktala,2025-10-20,How do I register a complaint about a lost money order? The helpline is not working.
+C041,Uday Chopra,2025-10-21,I was overcharged for the postage. The weight was 50g but they charged for 100g slab.
+C042,Varun Dhawan,2025-10-21,Can I schedule a pickup for a bulk parcel from my office?
+C043,Waseem Akram,2025-10-22,The postman forged my signature and left the parcel on the porch.
+C044,Xavier D,2025-10-22,I applied for a Philately account 2 months ago but haven't received my ID card yet.
+C045,Yami Gautam,2025-10-23,What is the procedure to transfer my savings account from one post office to another?
+C046,Zayed Khan,2025-10-23,My speed post to Chennai is delayed. It contains urgent medicines. Please help.
+C047,Aarav Singh,2025-10-24,Tracking shows delivered but I was at home all day and no one came.
+C048,Bianca Desai,2025-10-24,The staff refused to give me a receipt for the registered post. Is this standard procedure?
+C049,Chirag Paswan,2025-10-25,I want to close my Recurring Deposit account prematurely. What is the penalty?
+C050,Deepika P,2025-10-25,The digital weighing scale at the counter seems faulty. It shows different weights every time.
+C051,Esha Gupta,2025-10-26,My parcel arrived 15 days late. I missed my friend's birthday because of this delay.
+C052,Feroz Khan,2025-10-26,The postman frequently delivers letters to the wrong house in our colony.
+C053,Gauri Khan,2025-10-27,I need information on the Monthly Income Scheme (MIS). Can I open a joint account?
+C054,Himesh R,2025-10-27,The glass item I sent was wrapped in bubble wrap but still arrived broken. mishandling at sorting center.
+C055,Imran Hashmi,2025-10-28,Can I change the nominee for my PPF account online?
+C056,Jackie Shroff,2025-10-28,The queue management system is broken. People are cutting lines and staff is ignoring it.
+C057,Kajol Devgan,2025-10-29,My international parcel is stuck at the Foreign Post Office in Delhi for 3 weeks.
+C058,Lalit Modi,2025-10-29,I was not informed that my parcel had arrived. It was returned to sender after 7 days.
+C059,Malaika Arora,2025-10-30,Postman demanded 50 rupees for Diwali baksheesh. Unprofessional.
+C060,Naseeruddin S,2025-10-30,I want to apply for the Senior Citizen Savings Scheme. What is the age limit?
+C061,Oprah W,2025-10-31,Tracking ID IN555666 is invalid. Please check.
+C062,Parineeti C,2025-10-31,The package was wet and smelled of rain water. Please protect mail from weather.
+C063,Quincy Jones,2025-11-01,Service is very slow. It took 20 minutes to process one speed post.
+C064,Ranbir K,2025-11-01,My ATM card applied through Post Office Savings Bank has not arrived yet.
+C065,Sania Mirza,2025-11-02,I want to send a parcel to a soldier in the Army. Is there a special APO address rate?
+C066,Tiger Shroff,2025-11-02,The postman keeps throwing letters in the garden instead of the mailbox.
+C067,Urmila M,2025-11-03,I have not received the interest for my TD account for the last quarter.
+C068,Vicky Kaushal,2025-11-03,My parcel was routed to the wrong state! It went to Kerala instead of Karnataka.
+C069,Waheeda Rehman,2025-11-04,The staff was very helpful in filling out the form for me. Appreciate the help.
+C070,Xena Warrior,2025-11-04,Complaint regarding lost registered letter RL223344. It contained original marksheets.
+C071,Yash Chopra,2025-11-05,What are the working hours for the GPO on Saturdays?
+C072,Zoya Akhtar,2025-11-05,The tracking system is very laggy. It updates 2 days after the actual event.
+C073,Abhishek B,2025-11-06,My wife's passport was delivered to a security guard without ID verification. Unsafe.
+C074,Bipasha Basu,2025-11-06,I want to buy My Stamp sheets for a corporate event. Who do I contact?
+C075,Chetan Bhagat,2025-11-07,The parcel I received had been tampered with. The seal was broken.
+C076,Dharmendra S,2025-11-07,Pension payment is always late at this branch. Please look into it.
+C077,Ekta Kapoor,2025-11-08,Postman refused to come to the 3rd floor. We have an elevator!
+C078,Farah Khan,2025-11-08,Delay in delivery of interview letter. I missed my interview date!
+C079,Govinda A,2025-11-09,I need to update my mobile number linked to my savings account.
+C080,Hrithik R,2025-11-09,The parcel was smashed. It looks like someone stepped on it.
+C081,Ileana Dcruz,2025-11-10,Staff behavior was very rude when I asked for a pen.
+C082,Janhvi K,2025-11-10,Is there a tracking facility for postcards?
+C083,Karisma K,2025-11-11,My speed post has not been delivered even after 7 days. It was supposed to take 2 days.
+C084,Lara Dutta,2025-11-11,I want to complain about the cleanliness of the post office. It is very dirty.
+C085,Madhuri Dixit,2025-11-12,The server is always down at 10 AM. Why open if you can't work?
+C086,Nana Patekar,2025-11-12,I sent money to my son but the amount credited is less than what I sent.
+C087,Omi Vaidya,2025-11-13,Can I pay my electricity bill at the post office?
+C088,Preity Zinta,2025-11-13,The postman is very polite and always on time. Good job.
+C089,Qureshi H,2025-11-14,My parcel is showing delivered but I am in a different city! Fake delivery update.
+C090,Rani Mukerji,2025-11-14,I want to know the claim process for lost articles.
+C091,Saif Ali Khan,2025-11-15,The speed post charges are too high compared to private couriers.
+C092,Tabu,2025-11-15,I received someone else's Aadhaar card in my mail. This is a privacy breach.
+C093,Upen Patel,2025-11-16,The tracking says 'Door Locked' but I was home all day! The postman didn't come.
+C094,Vidya Balan,2025-11-16,How to activate net banking for my post office savings account?
+C095,Warina H,2025-11-17,The parcel was left in the rain by the gate. Everything is soaked.
+C096,Xerxes K,2025-11-17,Staff refused to help me fill the money order form.
+C097,Yuvraj Singh,2025-11-18,My sports kit sent via parcel post is missing. Tracking stopped at the hub.
+C098,Zareen Khan,2025-11-18,I want to complain about the lack of seating arrangement for senior citizens.
+C099,Arbaaz Khan,2025-11-19,The postman asks for money every time he delivers a passport.
+C100,Bobby Deol,2025-11-19,Delivery was delayed by a week. No explanation given.

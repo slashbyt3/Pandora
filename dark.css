@@ -1,0 +1,43 @@
+/* style.css - PASTE THIS */
+/* 1. FORCE Light Mode Styles */
+.stApp {
+    background-color: #FFFFFF;
+    color: #1D1D1F;
+}
+
+/* 2. Fix Sidebar */
+section[data-testid="stSidebar"] {
+    background-color: #F5F5F7;
+}
+
+/* 3. Apple Style Buttons */
+div.stButton > button {
+    background-color: #007AFF;
+    color: white !important;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 24px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+div.stButton > button:hover {
+    background-color: #0062CC;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    color: white !important;
+}
+
+/* 4. Inputs */
+.stTextInput > div > div > input, .stTextArea > div > div > textarea {
+    background-color: #F5F5F7;
+    color: #1D1D1F;
+    border: 1px solid transparent;
+    border-radius: 10px;
+}
+
+/* 5. Headings */
+h1, h2, h3, p, label, .stMarkdown {
+    color: #1D1D1F !important;
+}
