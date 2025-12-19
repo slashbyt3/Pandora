@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>India Post | AI Command Center</title>
+    <title>India Post | Command Center</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -63,7 +63,7 @@
             margin-bottom: 20px;
         }
 
-        .brand-logo-sidebar {
+        .brand-logo {
             width: 40px;
             height: 40px;
             background: white;
@@ -110,7 +110,6 @@
             max-height: 300px;
             overflow-y: auto;
         }
-        /* Scrollbar for Widget */
         .live-feed-widget::-webkit-scrollbar { width: 4px; }
         .live-feed-widget::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
 
@@ -165,7 +164,7 @@
         }
         .admin-avatar { width: 32px; height: 32px; background: var(--primary-dark); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 
-        /* TOP RIGHT LOGO */
+        /* Top Right Logo */
         .top-right-logo {
             height: 40px;
             width: auto;
@@ -249,6 +248,18 @@
 
         .ai-result-box { margin-top: 20px; background: white; border-left: 4px solid var(--accent-gold); padding: 16px; border-radius: 0 8px 8px 0; box-shadow: var(--shadow-card); display: none; }
 
+        /* Stats Bars (Zone Performance) */
+        .zone-bar-wrapper { margin-bottom: 16px; }
+        .zone-label { display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px; font-weight:500; color:var(--text-secondary); }
+        .zone-track { height:8px; background:var(--bg-surface); border-radius:4px; overflow:hidden; }
+        .zone-fill { height:100%; border-radius:4px; animation:grow 1s ease-out; }
+        @keyframes grow { from { width:0%; } }
+
+        /* Form Inputs (Config) */
+        .form-group { margin-bottom: 20px; }
+        .form-label { display:block; font-size:13px; font-weight:600; color:var(--text-secondary); margin-bottom:8px; }
+        .form-input { width:100%; padding:10px; border:1px solid var(--border-subtle); border-radius:8px; font-family:inherit; }
+
         /* Views */
         .app-view { display: none; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         .app-view.active { display: block; }
@@ -265,8 +276,8 @@
 
     <aside class="sidebar">
         <div class="brand-box">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/India_Post_Logo.svg/1200px-India_Post_Logo.svg.png" 
-                 alt="India Post" class="brand-logo-sidebar" onerror="this.style.display='none'">
+            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/India_Post.svg/1280px-India_Post.svg.png" 
+                 alt="India Post" class="brand-logo" onerror="this.style.display='none'">
             <div class="brand-text">
                 <h1>India Post</h1>
                 <span>AI Command Center</span>
@@ -278,7 +289,7 @@
                 <i class="fas fa-th-large"></i> Dashboard
             </li>
             <li class="nav-item" onclick="switchView('analytics')">
-                <i class="fas fa-chart-pie"></i> Analytics
+                <i class="fas fa-chart-pie"></i> Analytics & Mail
             </li>
             <li class="nav-item" onclick="switchView('complaints')">
                 <i class="fas fa-inbox"></i> Live Inbox
@@ -310,8 +321,8 @@
                     <span>Super Admin</span>
                     <i class="fas fa-chevron-down" style="font-size:10px;"></i>
                 </div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/India_Post_Logo.svg/1200px-India_Post_Logo.svg.png" 
-                     alt="India Post" class="top-right-logo" style="height: 40px; border-left: 1px solid #e5e7eb; padding-left: 15px;">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/32/India_Post.svg/1280px-India_Post.svg.png" 
+                     alt="Indian Post" class="top-right-logo">
             </div>
         </div>
 
@@ -346,8 +357,8 @@
 
                     <div class="card analytics-section">
                         <div class="card-header">
-                            <div class="card-title"><i class="fas fa-chart-area" style="color:var(--primary-light)"></i> Complaint Volume & Sentiment</div>
-                            <select style="border:none; background:transparent; font-weight:600; cursor:pointer;"><option>Real-Time</option></select>
+                            <div class="card-title"><i class="fas fa-chart-area" style="color:var(--primary-light)"></i> Complaint Volume</div>
+                            <select style="border:none; bg:transparent; font-weight:600; cursor:pointer;"><option>Real-Time</option></select>
                         </div>
                         <div style="height: 320px; width: 100%;">
                             <canvas id="mainChart"></canvas>
@@ -384,8 +395,18 @@
                             <button class="btn-modern" style="background:var(--bg-surface); color:#333; box-shadow:none;">View All</button>
                         </div>
                         <table class="data-table">
-                            <thead><tr><th>ID</th><th>Subject / Message</th><th>Category</th><th>Sentiment</th><th>Priority</th><th>Status</th></tr></thead>
-                            <tbody id="dashboard-table-body"></tbody>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Subject / Message</th>
+                                    <th>Category</th>
+                                    <th>Sentiment</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashboard-table-body">
+                                </tbody>
                         </table>
                     </div>
 
@@ -395,11 +416,68 @@
             <div id="view-analytics" class="app-view">
                 <div class="bento-grid">
                     <div class="card analytics-section">
-                        <h3><i class="fas fa-globe"></i> Regional Heatmap</h3>
-                        <div style="height:300px; display:flex; align-items:center; justify-content:center; color:#888;">
-                            <i class="fas fa-map-marked-alt" style="font-size:48px; margin-right:10px;"></i>
-                            Detailed Geo-Analytics Loading...
+                        <div class="card-header"><div class="card-title">Zone-wise Performance (Complaints)</div></div>
+                        <div style="padding:10px;">
+                            <div class="zone-bar-wrapper">
+                                <div class="zone-label"><span>North Zone (Delhi, Punjab)</span> <span>42%</span></div>
+                                <div class="zone-track"><div class="zone-fill" style="width:42%; background:#D32F2F;"></div></div>
+                            </div>
+                            <div class="zone-bar-wrapper">
+                                <div class="zone-label"><span>West Zone (Maharashtra, Gujarat)</span> <span>35%</span></div>
+                                <div class="zone-track"><div class="zone-fill" style="width:35%; background:#F57F17;"></div></div>
+                            </div>
+                            <div class="zone-bar-wrapper">
+                                <div class="zone-label"><span>South Zone (TN, Karnataka)</span> <span>15%</span></div>
+                                <div class="zone-track"><div class="zone-fill" style="width:15%; background:#1A73E8;"></div></div>
+                            </div>
+                            <div class="zone-bar-wrapper">
+                                <div class="zone-label"><span>East Zone (WB, Bihar)</span> <span>8%</span></div>
+                                <div class="zone-track"><div class="zone-fill" style="width:8%; background:#2E7D32;"></div></div>
+                            </div>
                         </div>
+                    </div>
+                    
+                    <div class="card ai-input-section">
+                        <div class="card-header"><div class="card-title">Mail Sorting Status</div></div>
+                        <div style="text-align:center; padding:20px;">
+                            <div style="font-size:48px; font-weight:700; color:#1A73E8;">98.2%</div>
+                            <div style="color:#666; font-size:13px; margin-bottom:20px;">Sorting Accuracy (AI Vision)</div>
+                            <div style="display:flex; justify-content:space-between; font-size:12px; border-top:1px solid #eee; padding-top:15px;">
+                                <div><strong>12,450</strong><br><span style="color:#888">Processed</span></div>
+                                <div><strong>142</strong><br><span style="color:#D32F2F">Failed</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-config" class="app-view">
+                <div class="bento-grid">
+                    <div class="card full-width-section">
+                        <div class="card-header"><div class="card-title">System Configuration</div></div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px;">
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">Default SLA Time (Hours)</label>
+                                    <input type="number" class="form-input" value="24">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Auto-Escalation Email</label>
+                                    <input type="email" class="form-input" value="regional.director@indiapost.gov.in">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">AI Confidence Threshold (%)</label>
+                                    <input type="range" style="width:100%" value="85">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Enable Voice Logging</label>
+                                    <select class="form-input"><option>Enabled</option><option>Disabled</option></select>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn-modern" style="width:auto; margin-top:10px;">Save Configuration</button>
                     </div>
                 </div>
             </div>
@@ -421,9 +499,17 @@
     </div>
 
     <script>
-        // --- CONFIGURATION ---
         const API_URL = "http://127.0.0.1:5000/api";
         let mainChartInstance = null;
+
+        // Fallback Data (Mock) - Used if Backend is Offline
+        const fallbackTickets = [
+            {ID: "IP-1001", Customer: "Rajesh K.", Complaint: "Package stuck at Mumbai Hub for 3 days", Category: "Speed Post", Sentiment: "Negative", Priority: "High", Status: "Pending"},
+            {ID: "IP-1002", Customer: "Sneha P.", Complaint: "ATM card not received yet", Category: "Banking", Sentiment: "Neutral", Priority: "Medium", Status: "Resolved"},
+            {ID: "IP-1003", Customer: "Amit V.", Complaint: "Staff was rude at Delhi GPO counter", Category: "Staff", Sentiment: "Negative", Priority: "High", Status: "Open"},
+            {ID: "IP-1004", Customer: "Priya S.", Complaint: "Tracking details not updating", Category: "General", Sentiment: "Neutral", Priority: "Low", Status: "Pending"},
+            {ID: "IP-1005", Customer: "Vikram R.", Complaint: "Very fast delivery, thanks!", Category: "Speed Post", Sentiment: "Positive", Priority: "Low", Status: "Resolved"}
+        ];
 
         // --- NAVIGATION ---
         function switchView(viewId) {
@@ -442,12 +528,17 @@
         // --- INIT ---
         $(document).ready(function() {
             initCharts();
-            initVoice(); // Initialize Voice Logic
+            initVoice();
+            // Initial Render with Fallback to look populated immediately
+            renderDashboard(fallbackTickets);
+            renderSidebar(fallbackTickets);
+            
+            // Try to fetch real data
             fetchAllData();
             setInterval(fetchAllData, 5000); 
         });
 
-        // --- VOICE RECOGNITION LOGIC ---
+        // --- VOICE RECOGNITION ---
         function initVoice() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             const micBtn = document.getElementById('mic-trigger');
@@ -455,64 +546,45 @@
 
             if (SpeechRecognition) {
                 const recognition = new SpeechRecognition();
-                recognition.continuous = false;
-                recognition.lang = 'en-IN';
-                recognition.interimResults = false;
+                recognition.continuous = false; recognition.lang = 'en-IN'; recognition.interimResults = false;
 
                 micBtn.addEventListener('click', () => {
-                    if (micBtn.classList.contains('mic-active')) {
-                        recognition.stop();
-                    } else {
-                        recognition.start();
-                    }
+                    if (micBtn.classList.contains('mic-active')) recognition.stop();
+                    else recognition.start();
                 });
 
-                recognition.onstart = () => {
-                    micBtn.classList.add('mic-active');
-                    textArea.placeholder = "Listening... Speak now...";
+                recognition.onstart = () => { micBtn.classList.add('mic-active'); textArea.placeholder = "Listening..."; };
+                recognition.onend = () => { micBtn.classList.remove('mic-active'); textArea.placeholder = "Type or click mic..."; };
+                recognition.onresult = (e) => { 
+                    const t = e.results[0][0].transcript; 
+                    textArea.value = textArea.value ? textArea.value + " " + t : t; 
                 };
-
-                recognition.onend = () => {
-                    micBtn.classList.remove('mic-active');
-                    textArea.placeholder = "Type or click the mic to speak...";
-                };
-
-                recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    const currentText = textArea.value;
-                    textArea.value = currentText ? currentText + " " + transcript : transcript;
-                };
-            } else {
-                micBtn.style.display = 'none'; // Hide if browser doesn't support
-            }
+            } else { micBtn.style.display = 'none'; }
         }
 
-        // --- API & DATA LOGIC ---
+        // --- DATA LOGIC ---
         async function fetchAllData() {
             try {
-                // 1. Fetch Tickets
                 const res = await fetch(`${API_URL}/tickets`);
                 const tickets = await res.json();
-                renderDashboard(tickets);
-                renderSidebar(tickets);
-
-                // 2. Fetch Stats
+                if(tickets.length > 0) {
+                    renderDashboard(tickets);
+                    renderSidebar(tickets);
+                }
                 const statsRes = await fetch(`${API_URL}/stats`);
                 const stats = await statsRes.json();
                 updateKPIs(stats);
                 updateCharts(stats);
-                
-            } catch (e) {
-                console.log("Backend offline or loading...", e);
+            } catch (e) { 
+                console.log("Using Fallback Data (Backend Offline)"); 
             }
         }
 
         async function analyzeAndAdd() {
             const text = $('#manual-text').val();
             if(!text) return;
-
             $('.loader-bar').show();
-            $('#process-ai').prop('disabled', true).html('<i class="fas fa-circle-notch fa-spin"></i> Processing');
+            $('#process-ai').prop('disabled', true).html('<i class="fas fa-circle-notch fa-spin"></i>');
             
             try {
                 const res = await fetch(`${API_URL}/analyze`, {
@@ -522,99 +594,71 @@
                 });
                 const data = await res.json();
                 
-                // Show Result Card
-                $('#ai-output').fadeIn();
+                $('#ai-output').slideDown();
                 $('#ai-cat').text(data.Category);
                 $('#ai-sent').text(data.Sentiment);
                 $('#ai-prio').text(data.Priority);
                 
                 $('#manual-text').val('');
-                fetchAllData(); // Refresh UI
-            } catch(e) {
-                alert("Error connecting to AI Brain.");
-            }
+                fetchAllData(); 
+            } catch(e) { alert("Backend Error. Is app.py running?"); }
             $('.loader-bar').hide();
-            $('#process-ai').prop('disabled', false).html('<i class="fas fa-sparkles"></i> Process');
+            $('#process-ai').prop('disabled', false).html('Analyze & Add');
         }
 
-        // --- RENDERERS ---
         function updateKPIs(data) {
+            if(!data || !data.kpi) return;
             $('#kpi-total').text(data.kpi.total);
             $('#kpi-resolved').text(data.kpi.resolved);
             $('#kpi-pending').text(data.kpi.pending);
         }
 
         function renderDashboard(tickets) {
-            const tbody = $('#dashboard-table-body');
-            tbody.empty();
-            
-            // Show top 5
+            const tbody = $('#dashboard-table-body'); tbody.empty();
             tickets.slice(0, 5).forEach(t => {
                 const pClass = t.Priority === 'High' ? 'pill-high' : 'pill-low';
-                const row = `
-                    <tr>
-                        <td style="font-family:monospace; font-weight:600; color:var(--text-secondary)">${t.ID.substring(0,8)}</td>
-                        <td style="font-weight:600">${t.Complaint.substring(0, 40)}...</td>
-                        <td><span class="pill pill-med">${t.Category}</span></td>
-                        <td>${t.Sentiment}</td>
-                        <td><span class="pill ${pClass}">${t.Priority}</span></td>
-                        <td><span class="pill pill-low">${t.Status}</span></td>
-                    </tr>
-                `;
-                tbody.append(row);
+                tbody.append(`<tr>
+                    <td>${t.ID.substring(0,8)}</td>
+                    <td style="font-weight:600">${t.Complaint.substring(0, 40)}...</td>
+                    <td><span class="pill pill-med">${t.Category}</span></td>
+                    <td>${t.Sentiment}</td>
+                    <td><span class="pill ${pClass}">${t.Priority}</span></td>
+                    <td>${t.Status}</td>
+                </tr>`);
             });
 
-            // Full Table Render
-            const fullBody = $('#full-table-body');
-            fullBody.empty();
+            const fullBody = $('#full-table-body'); fullBody.empty();
             tickets.forEach(t => {
-                fullBody.append(`<tr><td>${t.ID}</td><td>${t.Customer}</td><td>${t.Complaint}</td><td>${t.Category}</td><td>${t.Status}</td><td>${t.Date}</td></tr>`);
+                fullBody.append(`<tr><td>${t.ID}</td><td>${t.Customer}</td><td>${t.Complaint}</td><td>${t.Category}</td><td>${t.Status}</td><td><button class="btn-modern" style="padding:4px 8px; font-size:11px;">View</button></td></tr>`);
             });
         }
 
         function renderSidebar(tickets) {
-            const list = $('#sidebar-list');
-            list.empty();
-            tickets.slice(0, 10).forEach(t => {
+            const list = $('#sidebar-list'); list.empty();
+            tickets.slice(0, 15).forEach(t => {
                 const color = t.Priority === 'High' ? '#DC2626' : (t.Priority === 'Medium' ? '#D97706' : '#059669');
-                list.append(`
-                    <div class="ticket-mini" onclick="switchView('complaints')">
-                        <div class="status-dot" style="color: ${color}"></div>
-                        <div style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.Category} - ${t.Complaint.substring(0, 20)}...</div>
-                    </div>
-                `);
+                list.append(`<div class="ticket-mini" onclick="switchView('complaints')"><div class="status-dot" style="color: ${color}"></div><div style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${t.Category} - ${t.Complaint.substring(0, 20)}...</div></div>`);
             });
         }
 
-        // --- CHARTS ---
         function initCharts() {
             const ctx = document.getElementById('mainChart').getContext('2d');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(211, 47, 47, 0.2)'); gradient.addColorStop(1, 'rgba(211, 47, 47, 0)');
+
             mainChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Complaint Categories',
-                        data: [],
-                        backgroundColor: '#D32F2F',
-                        borderRadius: 4
-                    }]
+                    labels: ['Speed Post', 'Banking', 'Staff', 'General'],
+                    datasets: [{ label: 'Volume', data: [12, 5, 3, 2], backgroundColor: '#D32F2F', borderRadius: 4 }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { grid: { borderDash: [5, 5], color: '#eee' }, beginAtZero: true },
-                        x: { grid: { display: false } }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { borderDash: [5, 5], color: '#eee' } }, x: { grid: { display: false } } } }
             });
         }
 
         function updateCharts(stats) {
-            const data = stats.charts.categories;
-            if(mainChartInstance && data) {
+            if(mainChartInstance && stats.charts && stats.charts.categories) {
+                const data = stats.charts.categories;
                 mainChartInstance.data.labels = Object.keys(data);
                 mainChartInstance.data.datasets[0].data = Object.values(data);
                 mainChartInstance.update();
