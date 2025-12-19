@@ -20,7 +20,7 @@
             --border-color: #E9E9E7;
             --text-main: #37352F;
             --text-muted: #787774;
-            --primary: #D32F2F; /* Kept India Post Red */
+            --primary: #D32F2F; /* India Post Red */
             --selection: #CDE5FE;
             
             /* Notion Tag Colors */
@@ -58,25 +58,26 @@
         }
 
         .brand {
-            padding: 8px 14px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 0; /* Gap handled by margin on image */
             cursor: pointer;
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             transition: background 0.1s;
             font-size: 14px;
             font-weight: 600;
             color: var(--text-main);
         }
         .brand:hover { background: var(--bg-hover); }
-        .brand-icon {
-            width: 20px; height: 20px; 
-            background: var(--primary); 
-            color: white; 
-            border-radius: 3px; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 12px;
+        
+        /* UPDATED LOGO CSS */
+        .brand-logo {
+            height: 36px; /* Optimized height for the rectangular logo */
+            width: auto;
+            object-fit: contain;
+            margin-right: 8px;
+            display: block;
         }
 
         .menu { list-style: none; padding: 0; margin: 0; }
@@ -301,7 +302,10 @@
 
     <aside class="sidebar">
         <div class="brand">
-            <div class="brand-icon">IP</div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/India_Post_Logo.svg/1200px-India_Post_Logo.svg.png" 
+                 alt="India Post Logo" 
+                 class="brand-logo"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <span>India Post Workspace</span>
         </div>
         
