@@ -1,0 +1,68 @@
+/* style.css - Official India Post Government Vibe */
+
+/* 1. Main Background */
+.stApp {
+    background-color: #FFFFFF !important;
+    color: #333333 !important;
+}
+
+/* 2. Sidebar - Slightly grey to separate Admin area */
+section[data-testid="stSidebar"] {
+    background-color: #F8F9FA !important;
+    border-right: 1px solid #E0E0E0;
+}
+
+/* 3. INDIA POST BUTTONS (The Red Vibe) */
+div.stButton > button {
+    background-color: #D32F2F !important; /* India Post Red */
+    color: white !important;
+    border: none;
+    border-radius: 6px; /* Slightly squarer than Apple, looks more "Official" */
+    padding: 12px 28px;
+    font-weight: 600;
+    text-transform: uppercase; /* Makes it feel like a command */
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+div.stButton > button:hover {
+    background-color: #B71C1C !important; /* Darker Red on hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
+}
+
+/* 4. Active State */
+div.stButton > button:active {
+    background-color: #D32F2F !important;
+    transform: translateY(1px);
+}
+
+/* 5. Inputs (Official Form Style) */
+.stTextInput > div > div > input, .stTextArea > div > div > textarea {
+    background-color: #FFFFFF !important;
+    color: #333333 !important;
+    border: 1px solid #CCCCCC; /* Standard Grey Border */
+    border-radius: 4px; /* Standard Form Radius */
+}
+
+/* Focus State - Red Glow */
+.stTextInput > div > div > input:focus, .stTextArea > div > div > textarea:focus {
+    border: 1px solid #D32F2F !important;
+    box-shadow: 0 0 0 1px #D32F2F;
+}
+
+/* 6. Text Styling */
+h1, h2, h3 {
+    color: #D32F2F !important; /* Headings are Red */
+    font-family: 'Arial', sans-serif;
+}
+
+p, label, .stMarkdown, .stDataFrame {
+    color: #333333 !important;
+}
+
+/* 7. Success/Error Messages */
+.stAlert {
+    border-radius: 4px;
+}
