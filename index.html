@@ -1,24 +1,626 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta name="description" content="Webpage description goes here" />
-  <meta charset="utf-8">
-  <title>Change_me</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="">
-  <link rel="stylesheet" href="css/style.css">
-  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>India Post | Workspace</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            /* Notion Colors */
+            --bg-body: #FFFFFF;
+            --bg-sidebar: #F7F7F5;
+            --bg-hover: #EFEFEF;
+            --border-color: #E9E9E7;
+            --text-main: #37352F;
+            --text-muted: #787774;
+            --primary: #D32F2F; /* Kept India Post Red */
+            --selection: #CDE5FE;
+            
+            /* Notion Tag Colors */
+            --tag-red-bg: #FFDCE0; --tag-red-text: #D1576B;
+            --tag-blue-bg: #D3E5EF; --tag-blue-text: #2383E2;
+            --tag-green-bg: #DBEDDB; --tag-green-text: #4C8B58;
+            --tag-yellow-bg: #FDEDC8; --tag-yellow-text: #CB9244;
+            --tag-gray-bg: #F1F1EF; --tag-gray-text: #787774;
+        }
+
+        * { box-sizing: border-box; outline: none; }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- NOTION SIDEBAR --- */
+        .sidebar {
+            width: 240px;
+            background-color: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+            padding-top: 10px;
+            transition: 0.2s;
+        }
+
+        .brand {
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: background 0.1s;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+        .brand:hover { background: var(--bg-hover); }
+        .brand-icon {
+            width: 20px; height: 20px; 
+            background: var(--primary); 
+            color: white; 
+            border-radius: 3px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 12px;
+        }
+
+        .menu { list-style: none; padding: 0; margin: 0; }
+        .menu li { margin-bottom: 1px; }
+        
+        .menu a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 6px 14px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .menu a:hover { background: var(--bg-hover); color: var(--text-main); }
+        .menu a.active { background: var(--bg-hover); color: var(--text-main); font-weight: 600; }
+        .menu a i { width: 18px; text-align: center; font-size: 14px; }
+
+        /* Sidebar Ticket List */
+        .sidebar-section-title {
+            padding: 24px 14px 6px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .yt-sidebar-list { padding: 0; overflow-y: auto; }
+        .yt-row {
+            display: flex; align-items: center;
+            padding: 4px 14px;
+            cursor: pointer;
+            transition: 0.1s;
+            height: 32px;
+        }
+        .yt-row:hover { background: var(--bg-hover); }
+        
+        .yt-icon { font-size: 14px; margin-right: 10px; width: 18px; text-align: center; }
+        
+        .yt-name { 
+            font-size: 14px; color: var(--text-main); 
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;
+        }
+        
+        /* Priority Dots */
+        .priority-dot { width: 6px; height: 6px; border-radius: 50%; margin-left: 8px; }
+        .dot-red { background: #D1576B; }
+        .dot-yellow { background: #CB9244; }
+        .dot-green { background: #4C8B58; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            margin-left: 240px;
+            flex: 1;
+            padding: 0 96px 96px 96px; /* Classic Notion Padding */
+            background: var(--bg-body);
+        }
+
+        /* Notion Cover & Header */
+        .notion-cover {
+            height: 180px;
+            width: calc(100% + 192px);
+            margin-left: -96px;
+            background: #FDECC8; /* Soft Beige Cover */
+            margin-bottom: -40px;
+            opacity: 0.6;
+        }
+        
+        header { margin-top: 60px; margin-bottom: 40px; }
+        
+        .page-icon { font-size: 78px; margin-left: -4px; margin-bottom: 10px; }
+
+        header h2 {
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 0;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        
+        .header-meta {
+            display: flex; gap: 12px; margin-top: 16px; color: var(--text-muted); font-size: 14px;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 24px;
+        }
+
+        /* --- BLOCKS --- */
+        .notion-block { margin-bottom: 32px; }
+        
+        h3 {
+            font-size: 18px; font-weight: 600; margin: 0 0 12px 0; color: var(--text-main);
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* KPI Gallery View */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            padding: 16px;
+            height: 140px;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: background 0.1s;
+            position: relative;
+            background: #fff;
+        }
+        .stat-card:hover { background: var(--bg-sidebar); }
+
+        .stat-head { font-size: 14px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
+        .stat-value { font-size: 32px; font-weight: 600; margin: 12px 0 0 0; color: var(--text-main); }
+        .stat-trend { 
+            position: absolute; bottom: 16px; left: 16px;
+            font-size: 12px; display:flex; align-items:center; gap:4px; 
+        }
+        .trend-up { color: #4C8B58; background: #DBEDDB; padding: 2px 6px; border-radius: 3px; }
+        .trend-down { color: #D1576B; background: #FFDCE0; padding: 2px 6px; border-radius: 3px; }
+        
+        /* 2-Column Layout */
+        .col-2-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; margin-bottom: 32px; }
+        
+        /* Callout Block (Manual AI) */
+        .notion-callout {
+            padding: 16px;
+            border-radius: 4px;
+            background: var(--bg-sidebar);
+            border: 1px solid transparent;
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .notion-callout:hover { border-color: var(--border-color); }
+
+        /* Database View (Table) */
+        .notion-db {
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .db-header {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 100px;
+            background: var(--bg-sidebar);
+            padding: 10px 16px;
+            font-size: 12px; color: var(--text-muted); font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .db-row {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 100px;
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .db-row:hover { background: var(--bg-sidebar); }
+        .db-row:last-child { border-bottom: none; }
+
+        /* Tags */
+        .n-tag {
+            padding: 2px 6px; border-radius: 3px; font-size: 12px; line-height: 18px;
+            display: inline-block; white-space: nowrap;
+        }
+        .tag-red { background: var(--tag-red-bg); color: var(--tag-red-text); }
+        .tag-yellow { background: var(--tag-yellow-bg); color: var(--tag-yellow-text); }
+        .tag-green { background: var(--tag-green-bg); color: var(--tag-green-text); }
+        .tag-blue { background: var(--tag-blue-bg); color: var(--tag-blue-text); }
+        .tag-gray { background: var(--tag-gray-bg); color: var(--tag-gray-text); }
+
+        /* Toggles */
+        .slide-toggle { display: inline-flex; background: var(--bg-sidebar); padding: 2px; border-radius: 3px; margin-left: auto; }
+        .toggle-btn { 
+            border: none; background: transparent; padding: 4px 12px; font-size: 12px; 
+            color: var(--text-muted); cursor: pointer; border-radius: 3px; font-weight: 500;
+        }
+        .toggle-btn.active { background: white; color: var(--text-main); box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+
+        /* Inputs */
+        .notion-input {
+            width: 100%; border: 1px solid var(--border-color); background: white;
+            padding: 8px 12px; border-radius: 3px;
+            font-family: inherit; font-size: 14px; color: var(--text-main); resize: none;
+        }
+        .notion-input:focus { border-color: #2383E2; box-shadow: 0 0 0 2px rgba(35, 131, 226, 0.2); }
+
+        /* Buttons */
+        .n-btn-primary {
+            background: #2383E2; color: white; border: none; padding: 6px 12px;
+            border-radius: 3px; font-size: 13px; font-weight: 500; cursor: pointer;
+        }
+        .n-btn-ghost {
+            background: transparent; color: var(--text-muted); border: none; padding: 6px 12px;
+            font-size: 13px; cursor: pointer; border-radius: 3px;
+        }
+        .n-btn-ghost:hover { background: var(--bg-sidebar); color: var(--text-main); }
+
+        /* Chart Canvas */
+        .chart-container { position: relative; width: 100%; height: 220px; }
+        .chart-view { display: none; height: 100%; width: 100%; }
+        .chart-view.active { display: block; }
+
+        /* Action Panel */
+        .action-panel { display: none; padding: 12px 16px; background: #FAFAFA; border-top: 1px solid var(--border-color); font-size: 14px; }
+
+        /* Views */
+        .view-section { display: none; }
+        .view-section.active-view { display: block; }
+
+        /* Mobile */
+        @media (max-width: 1200px) { 
+            .stats-grid, .col-2-grid { grid-template-columns: 1fr; }
+            .main-content { padding: 40px; margin-left: 0; }
+            .sidebar { transform: translateX(-100%); }
+            .db-row, .db-header { grid-template-columns: 1fr; gap: 8px; }
+        }
+    </style>
 </head>
-
 <body>
-  
-<div class="container">
-  
-</div>
 
-<script>
-</script>
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">IP</div>
+            <span>India Post Workspace</span>
+        </div>
+        
+        <ul class="menu">
+            <li><a onclick="switchView('dashboard')" id="link-dashboard" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a onclick="switchView('analytics')" id="link-analytics"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a onclick="switchView('config')" id="link-config"><i class="fas fa-robot"></i> Configuration</a></li>
+            <li><a onclick="switchView('complaints')" id="link-complaints"><i class="fas fa-inbox"></i> Complaints Database</a></li>
+        </ul>
 
+        <div class="sidebar-section-title">
+            <span>ACTIVE TICKETS</span>
+            <i class="fas fa-plus" style="cursor:pointer; opacity:0.6;"></i>
+        </div>
+
+        <div class="yt-sidebar-list" id="sidebar-ticket-list">
+            </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <div class="notion-cover"></div>
+
+        <header>
+            <div class="page-icon">📬</div>
+            <h2 id="page-title">Complaint Management System</h2>
+            <div class="header-meta">
+                <span><i class="far fa-user-circle"></i> Admin</span>
+                <span><i class="far fa-clock"></i> Updated just now</span>
+                <span><i class="far fa-comment-alt"></i> 12 Comments</span>
+            </div>
+        </header>
+
+        <div id="view-dashboard" class="view-section active-view">
+            <div class="notion-block">
+                <h3>Overview</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-head"><i class="far fa-envelope"></i> Total Complaints</div>
+                        <div class="stat-value">1,240</div>
+                        <div class="stat-trend trend-up">12% vs last month</div>
+                        <div style="height:40px; width:40px; position:absolute; bottom:16px; right:16px;"><canvas id="kpi1"></canvas></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-head"><i class="far fa-check-circle"></i> AI Resolved</div>
+                        <div class="stat-value">892</div>
+                        <div class="stat-trend trend-up" style="color:#2383E2; background:#D3E5EF;">72% Auto-rate</div>
+                        <div style="height:40px; width:40px; position:absolute; bottom:16px; right:16px;"><canvas id="kpi2"></canvas></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-head"><i class="far fa-clock"></i> Pending</div>
+                        <div class="stat-value">45</div>
+                        <div class="stat-trend trend-down">5% improvement</div>
+                        <div style="height:40px; width:40px; position:absolute; bottom:16px; right:16px;"><canvas id="kpi3"></canvas></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-head"><i class="fas fa-bolt"></i> Avg Response</div>
+                        <div class="stat-value">2.4h</div>
+                        <div class="stat-trend" style="color:#787774; background:#F1F1EF;">Stable</div>
+                        <div style="height:40px; width:40px; position:absolute; bottom:16px; right:16px;"><canvas id="kpi4"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-2-grid">
+                <div>
+                    <h3>
+                        Live Analytics
+                        <div class="slide-toggle">
+                            <button class="toggle-btn active" onclick="toggleDashChart('sentiment', this)">Sentiment</button>
+                            <button class="toggle-btn" onclick="toggleDashChart('category', this)">Volume</button>
+                        </div>
+                    </h3>
+                    <div style="border: 1px solid var(--border-color); border-radius: 3px; padding: 16px;">
+                        <div class="chart-container">
+                            <div id="d-view-sentiment" class="chart-view active"><canvas id="dashSentimentChart"></canvas></div>
+                            <div id="d-view-category" class="chart-view"><canvas id="dashCategoryChart"></canvas></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3>Manual AI Analysis</h3>
+                    <div class="notion-callout">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <i class="fas fa-robot" style="color:var(--text-muted);"></i>
+                            <span style="font-size:14px; font-weight:500;">Paste unstructured text</span>
+                        </div>
+                        <textarea id="manual-text" rows="4" class="notion-input" placeholder="e.g. 'Speed Post delayed for 3 days...'"></textarea>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span id="analysis-result" style="display:none; font-size:12px;">
+                                <span class="n-tag tag-blue" id="res-cat"></span> 
+                                <span class="n-tag tag-gray" id="res-sent"></span>
+                            </span>
+                            <button class="n-btn-primary" id="process-ai">Analyze</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notion-block">
+                <h3>Recent Grievances</h3>
+                <div class="notion-db">
+                    <div class="db-header">
+                        <div>Message</div>
+                        <div>Category</div>
+                        <div>Sentiment</div>
+                        <div>Time</div>
+                        <div>Action</div>
+                    </div>
+                    <div id="dashboard-feed">
+                        <div class="db-row feed-item">
+                            <div style="font-weight:500;">Package IN8821 Delayed</div>
+                            <div><span class="n-tag tag-blue">Speed Post</span></div>
+                            <div><span class="n-tag tag-red">Negative</span></div>
+                            <div style="color:var(--text-muted); font-size:12px;">10m ago</div>
+                            <div><button class="n-btn-ghost suggest-btn">AI Draft</button></div>
+                        </div>
+                        <div class="action-panel ai-response">
+                            <strong>AI Suggestion:</strong> "Dear Customer, we apologize for the delay at Mumbai Hub. We have escalated this to the sorting center manager."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-analytics" class="view-section">
+            <div class="col-2-grid">
+                <div>
+                    <h3>Volume Trends</h3>
+                    <div style="border:1px solid var(--border-color); padding:16px; border-radius:3px;">
+                        <div class="chart-container" style="height:300px;"><canvas id="trendChart"></canvas></div>
+                    </div>
+                </div>
+                <div>
+                    <h3>Channel Source</h3>
+                    <div style="border:1px solid var(--border-color); padding:16px; border-radius:3px;">
+                        <div class="chart-container" style="height:300px;"><canvas id="channelChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-config" class="view-section">
+            <div class="col-2-grid">
+                <div>
+                    <h3>Automation Rules</h3>
+                    <div class="notion-db">
+                        <div style="padding:12px 16px; border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between;">
+                            <div>Auto-Reply Enabled</div>
+                            <input type="checkbox" checked>
+                        </div>
+                        <div style="padding:12px 16px; display:flex; justify-content:space-between;">
+                            <div>Confidence Threshold</div>
+                            <strong>85%</strong>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3>Persona</h3>
+                    <textarea class="notion-input" rows="6">You are a helpful support agent for India Post. Always apologize for delays. Use "Dear Customer".</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-complaints" class="view-section">
+            <div style="display:flex; justify-content:space-between; margin-bottom:16px;">
+                <div class="slide-toggle">
+                    <button class="toggle-btn active" onclick="renderAllTickets()">All View</button>
+                    <button class="toggle-btn">Urgent</button>
+                </div>
+                <input type="text" class="notion-input" placeholder="Search..." style="width:200px;">
+            </div>
+
+            <div class="notion-db">
+                <div class="db-header">
+                    <div>Complaint Subject</div>
+                    <div>Category</div>
+                    <div>Status</div>
+                    <div>Date</div>
+                    <div>Priority</div>
+                </div>
+                <div id="inbox-content">
+                    </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- DATA ---
+        const tickets = [
+            { id: 'IN8291023', title: 'Package Stuck at Hub', user: 'Rajesh Kumar', cat: 'Speed Post', status: 'Pending', time: '2 hrs ago', priority: 'High', color: 'dot-red', badge: 'tag-blue', avatar: 'bg-A', sentiment: 'Negative', tagClass: 'tag-yellow' },
+            { id: 'SB-9921', title: 'Interest Not Credited', user: 'Sneha Patil', cat: 'Banking', status: 'Resolved', time: '5 hrs ago', priority: 'Medium', color: 'dot-yellow', badge: 'tag-gray', avatar: 'bg-B', sentiment: 'Neutral', tagClass: 'tag-green' },
+            { id: 'PLI-8822', title: 'Premium Payment Issue', user: 'Amit Verma', cat: 'PLI', status: 'Open', time: '1 day ago', priority: 'High', color: 'dot-red', badge: 'tag-red', avatar: 'bg-C', sentiment: 'Negative', tagClass: 'tag-red' },
+            { id: 'MO-7712', title: 'Money Order Delay', user: 'Vikram Singh', cat: 'Money Order', status: 'Pending', time: '3 hrs ago', priority: 'Low', color: 'dot-green', badge: 'tag-blue', avatar: 'bg-D', sentiment: 'Neutral', tagClass: 'tag-yellow' },
+            { id: 'COD-1234', title: 'COD Status Update', user: 'Priya Sharma', cat: 'Logistics', status: 'Open', time: '30 mins ago', priority: 'High', color: 'dot-red', badge: 'tag-blue', avatar: 'bg-A', sentiment: 'Negative', tagClass: 'tag-red' }
+        ];
+
+        // --- INIT ---
+        function switchView(viewName) {
+            $('.menu a').removeClass('active'); $('#link-' + viewName).addClass('active');
+            const titles = { 'dashboard': 'Complaint Management System', 'analytics': 'Analytics & Reports', 'complaints': 'All Complaints Database', 'config': 'AI Settings' };
+            $('#page-title').text(titles[viewName]);
+            $('.view-section').removeClass('active-view'); $('#view-' + viewName).addClass('active-view');
+            if(viewName === 'complaints') renderAllTickets();
+        }
+
+        $(document).ready(function() {
+            initSidebar();
+            renderAllTickets(); 
+            initCharts();
+        });
+
+        // --- SIDEBAR GENERATOR ---
+        function initSidebar() {
+            const container = $('#sidebar-ticket-list');
+            container.empty();
+            
+            tickets.forEach(t => {
+                const item = `
+                    <div class="yt-row" onclick="loadTicket('${t.id}')">
+                        <div class="yt-icon"><i class="fas fa-file-alt" style="color:#787774;"></i></div>
+                        <div class="yt-name">${t.title}</div>
+                        <div class="priority-dot ${t.color}"></div>
+                    </div>
+                `;
+                container.append(item);
+            });
+        }
+
+        // --- INBOX LOGIC ---
+        function renderAllTickets() {
+            const container = $('#inbox-content');
+            container.empty();
+            tickets.forEach(t => container.append(createTicketHTML(t)));
+        }
+
+        window.loadTicket = function(id) {
+            switchView('complaints');
+            const t = tickets.find(x => x.id === id);
+            const container = $('#inbox-content');
+            container.empty();
+            if(t) {
+                const html = createTicketHTML(t);
+                const element = $(html);
+                container.append(element);
+                setTimeout(() => { element.find('.action-panel').slideDown(100); }, 50);
+            }
+        };
+
+        function createTicketHTML(t) {
+            return `
+                <div class="inbox-group">
+                    <div class="db-row" onclick="$(this).next('.action-panel').slideToggle(100)">
+                        <div style="font-weight:500;">
+                            ${t.title}
+                        </div>
+                        <div><span class="n-tag ${t.badge}">${t.cat}</span></div>
+                        <div><span class="n-tag ${t.tagClass}">${t.status}</span></div>
+                        <div style="color:var(--text-muted);">${t.time}</div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <div class="priority-dot ${t.color}"></div> <span style="font-size:12px;">${t.priority}</span>
+                        </div>
+                    </div>
+                    <div class="action-panel">
+                        <div style="margin-bottom:12px; font-size:12px; color:var(--text-muted);">
+                            <strong>ID:</strong> ${t.id} | <strong>User:</strong> ${t.user}
+                        </div>
+                        <div style="background:#F7F7F5; padding:8px; border-radius:3px; margin-bottom:12px;">
+                            <strong>AI Analysis:</strong> ${t.sentiment} sentiment detected. Recommended priority: ${t.priority}.
+                        </div>
+                        <button class="n-btn-primary">Approve Response</button>
+                        <button class="n-btn-ghost">Escalate</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- CHARTS ---
+        window.toggleDashChart = function(target, btn) {
+            $(btn).parent().find('.toggle-btn').removeClass('active'); $(btn).addClass('active');
+            $('#d-view-sentiment, #d-view-category').hide(); $('#d-view-' + target).show();
+        };
+
+        function initCharts() {
+            Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'; 
+            Chart.defaults.color = '#787774';
+            
+            const kpiData = { datasets: [{ data: [75, 25], backgroundColor: ['#D32F2F', '#E9E9E7'], borderWidth: 0, cutout: '75%' }] };
+            new Chart(document.getElementById('kpi1'), { type: 'doughnut', data: kpiData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
+            new Chart(document.getElementById('kpi2'), { type: 'doughnut', data: kpiData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
+            new Chart(document.getElementById('kpi3'), { type: 'doughnut', data: kpiData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
+            new Chart(document.getElementById('kpi4'), { type: 'doughnut', data: kpiData, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
+
+            const dashSentChart = new Chart(document.getElementById('dashSentimentChart'), { type: 'doughnut', data: { labels: ['Neg', 'Neu', 'Pos'], datasets: [{ data: [12, 5, 3], backgroundColor: ['#FFDCE0', '#F1F1EF', '#DBEDDB'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } }, cutout: '60%' } });
+            new Chart(document.getElementById('dashCategoryChart'), { type: 'bar', data: { labels: ['Speed', 'Bank', 'Staff'], datasets: [{ label: 'Vol', data: [15, 8, 4], backgroundColor: '#2383E2', borderRadius: 2 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
+
+            const ctxTrend = document.getElementById('trendChart').getContext('2d');
+            new Chart(ctxTrend, { type: 'line', data: { labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], datasets: [{ label: 'Complaints', data: [120, 190, 150, 220, 180, 90, 60], borderColor: '#D32F2F', backgroundColor: 'rgba(211, 47, 47, 0.05)', fill: true, tension: 0.3, pointRadius: 0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { grid: { borderDash: [4,4], color:'#E9E9E7' } }, x: { grid: { display: false } } } } });
+            
+            new Chart(document.getElementById('channelChart'), { type: 'polarArea', data: { labels: ['Tw', 'Em', 'Web', 'App'], datasets: [{ data: [25, 40, 20, 10], backgroundColor: ['#D3E5EF', '#FFDCE0', '#FDEDC8', '#DBEDDB'], borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { r: { ticks: { display: false }, grid: { color: '#E9E9E7' } } }, plugins: { legend: { position: 'bottom' } } } });
+
+            $(document).on('click', '.suggest-btn', function() { $(this).closest('.feed-item').next('.ai-response').slideToggle(100); });
+            
+            $('#process-ai').click(function() {
+                let text = $('#manual-text').val(); if (!text) return;
+                let sentiment = "Neutral", category = "General", badgeClass = "tag-gray";
+                if (text.toLowerCase().match(/bad|worst|delay/)) { sentiment = "Negative"; }
+                if (text.toLowerCase().match(/speed|post/)) { category = "Speed Post"; badgeClass = "tag-blue"; }
+                
+                $('#analysis-result').show(); 
+                $('#res-cat').text(category).attr('class', 'n-tag ' + badgeClass);
+                $('#res-sent').text(sentiment);
+
+                const newItem = `<div class="db-row feed-item"><div style="font-weight:500;">Manual Entry</div><div><span class="n-tag ${badgeClass}">${category}</span></div><div><span class="n-tag tag-gray">${sentiment}</span></div><div style="color:var(--text-muted); font-size:12px;">Just now</div><div><button class="n-btn-ghost suggest-btn">AI Draft</button></div></div><div class="action-panel ai-response" style="display:none;"><strong>AI Suggestion:</strong> Response generated.</div>`;
+                $('#dashboard-feed').prepend(newItem); $('#manual-text').val('');
+            });
+        }
+    </script>
 </body>
 </html>
